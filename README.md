@@ -54,5 +54,5 @@ If Vaadin pre-releases are not enabled by default, use the Maven parameter
 Our structure
 -------------------------
 
-Multi-functional graphical editor		 +==============
- Presentation here: https://prezi.com/if_4fn-t9gvw/edit/#0
+Multi-functional graphical editor. 
+Presentation here: https://prezi.com/if_4fn-t9gvw/edit/#0
