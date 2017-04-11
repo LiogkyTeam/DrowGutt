@@ -25,29 +25,29 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        /*final VerticalLayout layout = new VerticalLayout();
+    	final VerticalLayout layout = new VerticalLayout();
         
-        final TextField name = new TextField();
-        name.setCaption("Type your name here:");
+        final TextField name1 = new TextField();
+        name1.setCaption("Type your name here:");
 
         Button button = new Button("Click Me");
         button.addClickListener( e -> {
-            layout.addComponent(new Label("Thanks " + name.getValue() 
+            layout.addComponent(new Label("Thanks " + name1.getValue() 
                     + ", it works!"));
         });
         
-        layout.addComponents(name, button);
         
-        setContent(layout);*/
+        
+        
     	final TextField name = new TextField();
         name.setCaption("DO IT!");
     	Button doIt = new Button ("Do it!");
-    	final VerticalLayout layout = new VerticalLayout();
+    	
     	doIt.addClickListener(e -> {
     		layout.addComponent(form);
     	});
-    	layout.addComponents(name, doIt);
-    	
+    	layout.addComponents(name1, button, name, doIt);
+    	setContent(layout);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
