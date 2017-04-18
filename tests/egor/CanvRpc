@@ -1,4 +1,4 @@
-package main.vaadin.widgets.client;
+package tests.egor;
 
 import com.vaadin.shared.communication.ServerRpc;
 
