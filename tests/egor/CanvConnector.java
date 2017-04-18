@@ -1,4 +1,4 @@
-package main.vaadin.widgets.client;
+package tests.egor;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.communication.RpcProxy;
@@ -10,7 +10,7 @@ import main.vaadin.widgets.shared.CanvasState;
 
 @Connect(Canvas.class)
 public class CanvasConnector extends AbstractComponentConnector {
-    private final CanvasServerRpc rpc = RpcProxy.create(CanvasServerRpc.class, this);
+    /* private final CanvasServerRpc rpc = RpcProxy.create(CanvasServerRpc.class, this);
 
     protected CanvasWidget createCanvasWidget() {
         CanvasWidget widget = new CanvasWidget(getState().canvasWidth, getState().canvasHeight);
@@ -30,5 +30,5 @@ public class CanvasConnector extends AbstractComponentConnector {
     @Override
     public void onStateChanged(StateChangeEvent stateChangeEvent) {
         super.onStateChanged(stateChangeEvent);
-    }
+    } */
 }
