@@ -1,4 +1,4 @@
-package tests.stepan;
+/*package tests.stepan;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -55,3 +55,4 @@ public class foo extends Applet {
         g.drawString("y = f(x)", 180, 267);
     }
 }
+*/
