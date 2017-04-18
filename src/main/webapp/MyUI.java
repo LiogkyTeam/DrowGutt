@@ -1,4 +1,4 @@
-package main.vaadin;
+package main.webapp;
 
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
@@ -19,18 +19,12 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        final GridLayout layout = new GridLayout(7, 9);
-
-        final VerticalLayout layout1 = new VerticalLayout();
+        final VerticalLayout layout = new VerticalLayout();
 
         final TextField name = new TextField();
         name.setCaption("Smash dat butt:");
 
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 9; j++) {
-                layout.addComponent(new Button(new String("Row " + i + ", column " + j)), i, j);
-            }
-        }
+        layout.addComponent(new Button());
         setContent(layout);
 
     }
