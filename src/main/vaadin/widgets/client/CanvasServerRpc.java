@@ -12,4 +12,5 @@ public interface CanvasServerRpc extends ServerRpc {
     void dismissItem(Item item, String sessionID);
     //public void deleteItem(Item item);
     //public void changeItem(Item olditem, Item newitem);
+    void clearCanvas(); /* deletes all objects from canvas */
 }
