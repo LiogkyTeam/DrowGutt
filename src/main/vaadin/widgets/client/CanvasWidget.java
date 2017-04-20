@@ -1,43 +1,38 @@
 package main.vaadin.widgets.client;
 
-import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import item.Item;
-import sun.java2d.loops.DrawLine;
-
-import java.util.Date;
-
+import main.vaadin.widgets.shared.CanvasConnector;
 
 /**
  * Created by Alexey on 17.04.2017.
  */
 public class CanvasWidget extends VerticalPanel {
 
-    final Canvas canv;
-    float last_x = 0;
-    float last_y = 0;
-    boolean mode = true;
+    final com.google.gwt.canvas.client.Canvas canv;
+    private float last_x = 0;
+    private float last_y = 0;
+    private boolean mode = true;
     boolean drawing = false;
-    String penColor;
-    Item currentObj;
-    float dist_buffer;
+    private String penColor;
+    private Item currentObj;
+    private float dist_buffer = 10;
+    CanvasConnector connector = new CanvasConnector();
+    private CanvasServerRpc rpc;
 
 
     public CanvasWidget(float canvasWidth, float canvasHeight, String color) {
-        setBorderWidth(10);
-        setSize(canvasWidth + "px", canvasHeight + "px");
+
+        canv = com.google.gwt.canvas.client.Canvas.createIfSupported();
+        canv.setSize(canvasWidth + "px", canvasHeight + "px");
 
         penColor = color;
-        canv = Canvas.createIfSupported();
-        canv.setCoordinateSpaceWidth((int) canvasWidth);
-        canv.setCoordinateSpaceHeight((int) canvasHeight);
-        canv.setSize(canvasWidth + "px", canvasHeight + "px");
-        add(canv);
 
+        add(canv);
 
         canv.addMouseDownHandler(new MouseDownHandler() {
 
@@ -46,7 +41,7 @@ public class CanvasWidget extends VerticalPanel {
                 if (mode)
                     startDrawingLine(event.getClientX(), event.getClientY());
                 //else
-                    //startDrawingRect(event.getClientX(), event.getClientY());
+                //startDrawingRect(event.getClientX(), event.getClientY());
             }
         });
 
@@ -58,33 +53,7 @@ public class CanvasWidget extends VerticalPanel {
                     if (mode)
                         continueDrawingLine(event.getClientX(), event.getClientY());
                     //else
-                        //continueDrawingRect(event.getClientX(), event.getClientY());
-                }
-            }
-        });
-
-        canv.addMouseOutHandler(new MouseOutHandler() {
-
-            @Override
-            public void onMouseOut(MouseOutEvent event) {
-                if (drawing) {
-                    if (mode)
-                        endDrawingLine(firstTouch.getClientX(), firstTouch.getClientY());
-                    //else
-                       // endDrawingRect(firstTouch.getClientX(), firstTouch.getClientY());
-                }
-            }
-        });
-
-        canv.addMouseUpHandler(new MouseUpHandler() {
-
-            @Override
-            public void onMouseUp(MouseUpEvent event) {
-                if (drawing) {
-                    if (mode)
-                        endDrawingLine(firstTouch.getClientX(), firstTouch.getClientY());
-                    //else
-                       // endDrawingRect(firstTouch.getClientX(), firstTouch.getClientY());
+                    //continueDrawingRect(event.getClientX(), event.getClientY());
                 }
             }
         });
@@ -98,7 +67,7 @@ public class CanvasWidget extends VerticalPanel {
                     if (mode)
                         startDrawingLine(firstTouch.getClientX(), firstTouch.getClientY());
                     //else
-                        //startDrawingRect(firstTouch.getClientX(), firstTouch.getClientY());
+                    //startDrawingRect(firstTouch.getClientX(), firstTouch.getClientY());
                 }
             }
         });
@@ -112,21 +81,7 @@ public class CanvasWidget extends VerticalPanel {
                     if (mode)
                         continueDrawingLine(firstTouch.getClientX(), firstTouch.getClientY());
                     //else
-                       // continueDrawingRect(firstTouch.getClientX(), firstTouch.getClientY());
-                    event.preventDefault();
-                }
-            }
-        });
-
-        canv.addTouchEndHandler(new TouchEndHandler() {
-
-            @Override
-            public void onTouchEnd(TouchEndEvent event) {
-                if (drawing) {
-                    if (mode)
-                        endDrawingLine(firstTouch.getClientX(), firstTouch.getClientY());
-                    //else
-                       // endDrawingRect(firstTouch.getClientX(), firstTouch.getClientY());
+                    // continueDrawingRect(firstTouch.getClientX(), firstTouch.getClientY());
                     event.preventDefault();
                 }
             }
@@ -136,10 +91,10 @@ public class CanvasWidget extends VerticalPanel {
     protected void startDrawingLine(int clientX, int clientY) {
         drawing = true;
         DrLine newLine = new DrLine();
-        canv.objList.add(newLine);
+        rpc.addItem(newLine);
         float x = clientX - canv.getAbsoluteLeft() + Window.getScrollLeft();
         float y = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
-        newLine.points.add(new DrPoint(x, y));
+        newLine.addPoint(new DrPoint(x, y));
         last_x = x;
         last_y = y;
     }
@@ -159,7 +114,7 @@ public class CanvasWidget extends VerticalPanel {
             context.closePath();
             context.stroke();
             if(mode & currentObj.getClass().equals(DrLine.class))
-                ((DrLine)currentObj).points.add(new DrPoint(x, y));
+                ((DrLine)currentObj).addPoint(new DrPoint(x, y));
             last_x = x;
             last_y = y;
         }
@@ -178,7 +133,7 @@ public class CanvasWidget extends VerticalPanel {
         context.setLineWidth(5);
         context.setStrokeStyle(line.getColor());
         boolean first = true;
-        for(DrPoint point : line.points) {
+        for(DrPoint point : line.getPoints()) {
             if (first) {
                 context.moveTo(point.x, point.y);
                 first = false;
@@ -195,4 +150,7 @@ public class CanvasWidget extends VerticalPanel {
         return (float) Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
     }
 
+    public void addRpc(CanvasServerRpc rpc) {
+        this.rpc = rpc;
+    }
 }

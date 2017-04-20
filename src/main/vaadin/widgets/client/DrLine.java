@@ -11,7 +11,7 @@ import java.util.List;
 public class DrLine extends Item {
     private static final long serialVersionUID = 1L;
 
-    public List<DrPoint> points = new ArrayList<DrPoint>();
+    private List<DrPoint> points = new ArrayList<DrPoint>();
 
     public DrLine() {
     }
@@ -23,6 +23,10 @@ public class DrLine extends Item {
     public List<DrPoint> getPointsFrom(int index) {
         return points.subList(index, points.size() - 1);
     }
+
+    public List<DrPoint> getPoints() {
+        return points;
+}
 
     public void addPoints(List<DrPoint> points) {
         this.points.addAll(points);
