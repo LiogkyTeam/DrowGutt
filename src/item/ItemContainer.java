@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemContainer implements Serializable{
+public class ItemContainer implements Serializable {
     private ArrayList<Item> items = new ArrayList<Item>();
 
-    public void addItem(Item item){
+    public void addItem(Item item) {
         items.add(item);
     }
 
     //Returns the Item that currently reflects the specified Item in the ItemContainer
-    public Item getCurItem(Item item){
+    public Item getCurItem(Item item) {
         long id = item.getID();
-        for (Item curItem: items){
+        for (Item curItem : items) {
             if (id == curItem.getID()) return curItem;
         }
         return null;
@@ -35,12 +35,12 @@ public class ItemContainer implements Serializable{
     }
 
     //If item contains in ItemContain then it will replaced to income item, else add(item)
-    public void changeItem (Item item){
+    public void changeItem(Item item) {
         if (changeExistsItem(item)) return;
         items.add(item);
     }
 
-    public void clear(){
+    public void clear() {
         items.clear();
     }
 }

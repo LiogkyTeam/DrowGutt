@@ -91,7 +91,6 @@
 							<goal>update-widgetset</goal>
 							<goal>compile</goal>
 							<!-- Comment out compile-theme goal to use on-the-fly theme compilation -->
-							<goal>compile-theme</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -144,7 +143,7 @@
 					<id>vaadin-snapshots</id>
 					<url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
 					<releases>
-						<enabled>false</enabled>
+						<enabled>true</enabled>
 					</releases>
 					<snapshots>
 						<enabled>true</enabled>

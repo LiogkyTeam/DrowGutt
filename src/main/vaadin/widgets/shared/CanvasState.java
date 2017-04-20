@@ -7,6 +7,12 @@ import item.ItemContainer;
 import java.util.List;
 import java.util.Map;
 
+import item.ItemContainer;
+
+/**
+ * Created by Alexey on 17.04.2017.
+ */
+
 //this class defined shared state, that will send to all users from server
 public class CanvasState extends AbstractComponentState {
     public float canvasWidth = 800;

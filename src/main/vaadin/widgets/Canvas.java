@@ -1,5 +1,6 @@
 package main.vaadin.widgets;
 
+
 import com.vaadin.ui.UI;
 import item.Item;
 import item.ItemContainer;
@@ -14,7 +15,7 @@ public class Canvas extends com.vaadin.ui.AbstractComponent {
     //the following field need for serialization, better to change it to more hard after some time
     //private static final long serialVersionUID = 1L;
 
-   private CanvasServerRpc rpc = new CanvasServerRpc() {
+    private CanvasServerRpc rpc = new CanvasServerRpc() {
         @Override
         public void addItem(Item item) {
             getState().itemContainer.addItem(item);
@@ -24,7 +25,7 @@ public class Canvas extends com.vaadin.ui.AbstractComponent {
             item.setBlock(sessionID);
         }
         @Override
-       public void dismissItem(Item item, String sessionID){
+        public void dismissItem(Item item, String sessionID){
             item.rmBlock(sessionID);
         }
    };
