@@ -153,4 +153,20 @@ public class CanvasWidget extends VerticalPanel {
     public void addRpc(CanvasServerRpc rpc) {
         this.rpc = rpc;
     }
+
+    public float getCanvasWidth() {
+        return canv.getOffsetWidth();
+    }
+
+    public float getCanvasHeight() {
+        return canv.getOffsetHeight();
+    }
+
+    public void setCanvasWidth(float w) {
+        canv.setWidth(w + "px");
+    }
+
+    public void setCanvasHeight(float h) {
+        canv.setHeight(h + "px");
+    }
 }
