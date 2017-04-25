@@ -1,12 +1,6 @@
 package main.vaadin.widgets.shared;
 
 import com.vaadin.shared.AbstractComponentState;
-import item.Item;
-import item.ItemContainer;
-
-import java.util.List;
-import java.util.Map;
-
 import item.ItemContainer;
 
 /**
