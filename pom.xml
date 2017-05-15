@@ -13,8 +13,8 @@
 	</prerequisites>
 
 	<modules>
-		<module>widget-addon</module>
-		<module>widget-demo</module>
+		<module>canv-addon</module>
+		<module>application</module>
 	</modules>
 
 	<profiles>

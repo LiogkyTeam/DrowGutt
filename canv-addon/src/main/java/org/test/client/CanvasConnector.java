@@ -5,12 +5,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
-import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
@@ -24,7 +21,6 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.MouseEventDetailsBuilder;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
@@ -46,9 +42,6 @@ public class CanvasConnector extends AbstractComponentConnector implements
 
     private final CanvasServerRpc rpc = RpcProxy.create(CanvasServerRpc.class,
             this);
-
-    private final static Logger logger = Logger.getLogger(CanvasConnector.class
-            .getName());
 
     public CanvasConnector() {
         commands = new ArrayList<Command>();
@@ -81,23 +74,75 @@ public class CanvasConnector extends AbstractComponentConnector implements
         registerRpc(CanvasClientRpc.class, new CanvasClientRpc() {
             private static final long serialVersionUID = -7521521510799765779L;
 
+            private final Context2d ctx = getWidget().getContext2d();
+
+            @Override
+            public void setGradientFillStyle(final String gradientName) {
+                if (gradients.containsKey(gradientName)){
+                    runCommand(() -> {
+                        getWidget().setGradientFillStyle(gradients.get(gradientName));
+                    });
+                }
+                else System.err
+                        .println("setGradientFillStyle: Gradient not found with name "
+                                + gradientName);
+            }
+
+            @Override
+            public void createLinearGradient(final String name,
+                                             final Double x0, final Double y0, final Double x1,
+                                             final Double y1) {
+                runCommand(() -> {gradients.put(name, getWidget().createLinearGradient(x0, y0, x1, y1));});
+            }
+
+            @Override
+            public void createRadialGradient(final String name,
+                                             final Double x0, final Double y0, final Double r0,
+                                             final Double x1, final Double y1, final Double r1) {
+                runCommand(() -> {gradients.put(name, getWidget().createRadialGradient(x0, y0, r0, x1, y1, r1));});
+            }
+
+            @Override
+            public void setGradientStrokeStyle(final String gradientName) {
+                if (gradients.containsKey(gradientName)){
+                    runCommand(() -> {getWidget().setGradientStrokeStyle(gradients.get(gradientName));});
+                }
+                else System.err
+                        .println("setGradientFillStyle: Gradient not found with name "
+                                + gradientName);
+            }
+
+            @Override
+            public void addColorStop(final String gradientName,
+                                     final Double offset, final String color) {
+                if (gradients.containsKey(gradientName)) {
+                    runCommand(() -> {gradients.get(gradientName).addColorStop(offset, color);});
+                } else {
+                    System.err
+                            .println("addColorStop: Gradient not found with name "
+                                    + gradientName);
+                }
+
+            }
+
             @Override
             public void fillRect(final Double startX, final Double startY,
                                  final Double width, final Double height) {
-                getWidget().fillRect(startX, startY, width, height);
+                runCommand(() -> {getWidget().fillRect(startX, startY, width, height);});
             }
 
             @Override
             public void drawImage1(final String url, final Double offsetX,
                                    final Double offsetY) {
-                getWidget().drawImage1(url, offsetX, offsetY);
+                runCommand(() -> {getWidget().drawImage1(url, offsetX, offsetY);});
             }
 
             @Override
             public void drawImage2(final String url, final Double offsetX,
                                    final Double offsetY, final Double imageWidth,
                                    final Double imageHeight) {
-               getWidget().drawImage2(url, offsetX, offsetY, imageWidth, imageHeight);
+                runCommand(() -> {getWidget().drawImage2(url, offsetX, offsetY,
+                        imageWidth, imageHeight);});
             }
 
             @Override
@@ -106,245 +151,164 @@ public class CanvasConnector extends AbstractComponentConnector implements
                                    final Double sourceHeight, final Double destX,
                                    final Double destY, final Double destWidth,
                                    final Double destHeight) {
-                getWidget().drawImage3(url, sourceX, sourceY, sourceWidth, sourceHeight,
-                        destX, destY, destWidth, destHeight);
+                runCommand(() -> {getWidget().drawImage3(url, sourceX, sourceY, sourceWidth, sourceHeight,
+                        destX, destY, destWidth, destHeight);});
             }
 
             @Override
             public void fill() {
-                getWidget().fill();
+                runCommand(() -> {getWidget().fill();});
             }
 
             @Override
             public void fillText(final String text, final Double x,
                                  final Double y, final Double maxWidth) {
-                getWidget().fillText(text, x, y, maxWidth);
+                runCommand(() -> {getWidget().fillText(text, x, y, maxWidth);});
             }
 
             @Override
             public void setFont(final String font) {
-                getWidget().setFont(font);
+                runCommand(() -> {getWidget().setFont(font);});
             }
 
             @Override
             public void setTextBaseline(final String textBaseline) {
-                getWidget().setTextBaseline(textBaseline);
+                runCommand(() -> {getWidget().setTextBaseline(textBaseline);});
             }
 
             @Override
             public void lineTo(final Double x, final Double y) {
-                getWidget().lineTo(x, y);
+                runCommand(() -> {getWidget().lineTo(x, y);});
             }
 
             @Override
             public void moveTo(final Double x, final Double y) {
-                getWidget().moveTo(x, y);
+                runCommand(() -> {getWidget().moveTo(x, y);});
             }
 
             @Override
             public void quadraticCurveTo(final Double cpx, final Double cpy,
                                          final Double x, final Double y) {
-                getWidget().quadraticCurveTo(cpx, cpy, x, y);
+                runCommand(() -> {getWidget().quadraticCurveTo(cpx, cpy, x, y);});
             }
 
             @Override
             public void bezierCurveTo(final double cp1x, final double cp1y,
                                       final double cp2x, final double cp2y, final double x,
                                       final double y) {
-                getWidget().bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
+                runCommand(() -> {getWidget().bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);});
             }
 
             @Override
             public void rect(final Double startX, final Double startY,
                              final Double rectWidth, final Double rectHeight) {
-                getWidget().rect(startX, startY, rectWidth, rectHeight);
+                runCommand(() -> {getWidget().rect(startX, startY, rectWidth, rectHeight);});
             }
 
             @Override
             public void rotate(final Double angle) {
-                getWidget().rotate(angle);
+                runCommand(() -> {getWidget().rotate(angle);});
             }
 
             @Override
             public void setFillStyle(final String color) {
-                getWidget().setFillStyle(color);
+                runCommand(() -> {getWidget().setFillStyle(color);});
             }
 
             @Override
             public void setLineCap(final String lineCap) {
-                getWidget().setLineCap(lineCap);
+                runCommand(() -> {getWidget().setLineCap(lineCap);});
             }
 
             @Override
             public void setLineJoin(final String lineJoin) {
-                getWidget().setLineJoin(lineJoin);
+                runCommand(() -> {getWidget().setLineJoin(lineJoin);});
             }
 
             @Override
             public void setLineWidth(final Double lineWidth) {
-                getWidget().setLineWidth(lineWidth);
+                runCommand(() -> {getWidget().setLineWidth(lineWidth);});
             }
 
             @Override
             public void setMiterLimit(final Double miterLimit) {
-                getWidget().setMiterLimit(miterLimit);
+                runCommand(() -> {getWidget().setMiterLimit(miterLimit);});
             }
 
             @Override
             public void strokeRect(final Double startX, final Double startY,
                                    final Double strokeWidth, final Double strokeHeight) {
-                getWidget().strokeRect(startX, startY, strokeWidth, strokeHeight);
+                runCommand(() -> {getWidget().strokeRect(startX, startY, strokeWidth, strokeHeight);});
             }
 
             @Override
             public void transform(final Double m11, final Double m12,
                                   final Double m21, final Double m22, final Double dx,
                                   final Double dy) {
-                getWidget().transform(m11, m12, m21, m22, dx, dy);
+                runCommand(() -> {getWidget().transform(m11, m12, m21, m22, dx, dy);});
             }
 
             @Override
             public void arc(final Double x, final Double y,
                             final Double radius, final Double startAngle,
                             final Double endAngle, Boolean antiClockwise) {
-                getWidget().arc(x, y, radius, startAngle, endAngle, antiClockwise);
+                runCommand(() -> {getWidget().arc(x, y, radius, startAngle, endAngle, antiClockwise);});
             }
 
             @Override
             public void translate(final Double x, final Double y) {
-                getWidget().translate(x, y);
+                runCommand(() -> {getWidget().translate(x, y);});
             }
 
             @Override
             public void scale(final Double x, final Double y) {
-                getWidget().scale(x, y);
+                runCommand(() -> {getWidget().scale(x, y);});
             }
 
             @Override
             public void stroke() {
-                getWidget().stroke();
+                runCommand(() -> {getWidget().stroke();});
             }
 
             @Override
             public void saveContext() {
-                getWidget().saveContext();
+                runCommand(() -> {getWidget().saveContext();});
             }
 
             @Override
             public void restoreContext() {
-                getWidget().restoreContext();
+                runCommand(() -> {getWidget().restoreContext();});
             }
 
             @Override
             public void setStrokeStyle(final String rgb) {
-                getWidget().setStrokeStyle(rgb);
+                runCommand(() -> {getWidget().setStrokeStyle(rgb);});
             }
 
             @Override
             public void beginPath() {
-                getWidget().beginPath();
+                runCommand(() -> {getWidget().beginPath();});
             }
 
             @Override
             public void clear() {
                 getWidget().clear();
+                clearCommands();
             }
 
             @Override
             public void setGlobalAlpha(final Double alpha) {
-                getWidget().setGlobalAlpha(alpha);
+                runCommand(() -> {getWidget().setGlobalAlpha(alpha);});
             }
 
             @Override
             public void closePath() {
-                getWidget().closePath();
+                runCommand(() -> {getWidget().closePath();});
             }
 
             @Override
             public void setGlobalCompositeOperation(final String mode) {
-                getWidget().setGlobalCompositeOperation(mode);
-            }
-
-            private final Context2d ctx = getWidget().getContext2d();
-
-            @Override
-            public void setGradientFillStyle(final String gradientName) {
-                runCommand(new Command() {
-                    @Override
-                    public void execute() {
-                        if (gradients.containsKey(gradientName)) {
-                            ctx.setFillStyle(gradients.get(gradientName));
-                        } else {
-                            System.err
-                                    .println("setGradientFillStyle: Gradient not foud with name "
-                                            + gradientName);
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void createLinearGradient(final String name,
-                                             final Double x0, final Double y0, final Double x1,
-                                             final Double y1) {
-                runCommand(new Command() {
-                    @Override
-                    public void execute() {
-                        CanvasGradient newGradient = ctx.createLinearGradient(
-                                x0, y0, x1, y1);
-
-                        gradients.put(name, newGradient);
-                    }
-                });
-            }
-
-            @Override
-            public void createRadialGradient(final String name,
-                                             final Double x0, final Double y0, final Double r0,
-                                             final Double x1, final Double y1, final Double r1) {
-                runCommand(new Command() {
-                    @Override
-                    public void execute() {
-                        CanvasGradient newGradient = ctx.createRadialGradient(
-                                x0, y0, r0, x1, y1, r1);
-
-                        gradients.put(name, newGradient);
-                    }
-                });
-            }
-
-            @Override
-            public void setGradientStrokeStyle(final String gradientName) {
-                runCommand(new Command() {
-                    @Override
-                    public void execute() {
-                        if (gradients.containsKey(gradientName)) {
-                            ctx.setStrokeStyle(gradients.get(gradientName));
-                        } else {
-                            System.err
-                                    .println("setGradientStrokeStyle: Gradient not found with name "
-                                            + gradientName);
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void addColorStop(final String gradientName,
-                                     final Double offset, final String color) {
-                runCommand(new Command() {
-                    @Override
-                    public void execute() {
-                        if (gradients.containsKey(gradientName)) {
-                            gradients.get(gradientName).addColorStop(offset,
-                                    color);
-                        } else {
-                            System.err
-                                    .println("addColorStop: Gradient not foud with name "
-                                            + gradientName);
-                        }
-                    }
-                });
+                runCommand(() -> {getWidget().setGlobalCompositeOperation(mode);});
             }
 
             @Override
@@ -384,11 +348,6 @@ public class CanvasConnector extends AbstractComponentConnector implements
             }
         });
     }
-
-    //@Override
-    /*protected Widget createWidget() {
-        return Canvas.createIfSupported();
-    }*/
 
     @Override
     public void layout() {
