@@ -1,5 +1,7 @@
 package org.test.client.item;
 
+import org.test.client.CanvasWidget;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,7 +15,10 @@ public class Item implements Serializable, Blockable{
     private boolean block = false;
     private String blocksession;
 
-    private float x_max, y_max, x_min, y_min;
+    private int x_max;
+    private int y_max;
+    private int x_min;
+    private int y_min;
     protected String color;
 
     public Item () {
@@ -21,7 +26,7 @@ public class Item implements Serializable, Blockable{
         id = identity++;
     }
 
-    public Item(float x_max, float y_max, float x_min, float y_min) {
+    public Item(int x_max, int y_max, int x_min, int y_min) {
         change();
         this.x_max = x_max;
         this.y_max = y_max;
@@ -76,43 +81,43 @@ public class Item implements Serializable, Blockable{
         return block;
     }
 
-    public void setX_max(float x_max) {
+    public void setX_max(int x_max) {
         if (this.x_max != x_max) change();
         this.x_max = x_max;
     }
 
-    public void setY_max(float y_max) {
+    public void setY_max(int y_max) {
         if (this.y_max != y_max) change();
         this.y_max = y_max;
     }
 
-    public void setX_min(float x_min) {
+    public void setX_min(int x_min) {
         if (this.x_min != x_min) change();
         this.x_min = x_min;
     }
 
-    public void setY_min(float y_min) {
+    public void setY_min(int y_min) {
         if (this.y_min != y_min) change();
         this.y_min = y_min;
     }
 
-    public float getX_max() {
+    public int getX_max() {
         return x_max;
     }
 
-    public float getY_max() {
+    public int getY_max() {
         return y_max;
     }
 
-    public float getX_min() {
+    public int getX_min() {
         return x_min;
     }
 
-    public float getY_min() {
+    public int getY_min() {
         return y_min;
     }
 
-    public void setBorders(float x_min, float y_min, float x_max, float y_max){
+    public void setBorders(int x_min, int y_min, int x_max, int y_max){
         setX_min(x_min);
         setY_min(y_min);
         setX_max(x_max);
@@ -141,5 +146,10 @@ public class Item implements Serializable, Blockable{
 
     long getID(){
         return id;
+    }
+
+    //this method necessary to override!!!
+    public void Drow(CanvasWidget canvas){
+        //Write here some default realization
     }
 }
