@@ -1,5 +1,11 @@
-@import "../valo/valo.scss";
+$v-background-color: #ffffff;
+//$v-border: #111;
+@import "../valo/valo";
+//@import "styles.css";
 
+
+
+$white: #ffffff;
 $gray: #d1d1cf;
 $green: #40b527;
 $darkgreen: darken($green, 30%);
@@ -10,9 +16,10 @@ $darkgreen: darken($green, 30%);
 	// Include valo theme styles in your theme
 	@include valo;
 
+
 	// You can style your ui app right here
-	.demoContentLayout {
-		background-color: $gray;
+	.demo{
+		background-color: $white;
 		background-image: url(images/radial-gradient.png);
 		background-size: 90%;
 		background-position: center center;
