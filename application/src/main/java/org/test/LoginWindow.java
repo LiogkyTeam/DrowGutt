@@ -1,3 +1,7 @@
+package org.test;
+
+import com.vaadin.ui.*;
+
 public class LoginWindow extends Window
 {
     private Button btnLogin = new Button("Login");
