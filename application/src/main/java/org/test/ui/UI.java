@@ -1,6 +1,7 @@
 package org.test.ui;
 
 
+import com.vaadin.annotations.Push;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.*;
@@ -18,9 +19,10 @@ import com.vaadin.server.VaadinServlet;
 
 @Theme("demo")
 @SuppressWarnings("serial")
+@Push
 public class UI extends com.vaadin.ui.UI
 {
-        private Canvas canvas;
+    private static Rooms rooms = new Rooms();
 
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = UI.class)
@@ -29,6 +31,12 @@ public class UI extends com.vaadin.ui.UI
 
     @Override
     protected void init(VaadinRequest request) {
+        Room room = rooms.createRoom(this, 0);
+        Key<String> name = new Key<String>("MyRoom_v0.01");
+        rooms.addRoom(name, room);
+
+        Canvas canvas = room.getCanvas(this);
+
         final VerticalLayout layout = new VerticalLayout();
         final HorizontalLayout layout1 = new HorizontalLayout();
         final MenuBar menu = new MenuBar();
@@ -38,10 +46,8 @@ public class UI extends com.vaadin.ui.UI
         size.addItem("2px",new ThemeResource("icons/2.png"),null);
         size.addItem("3px",new ThemeResource("icons/3.png"),null);
         size.addItem("4px",new ThemeResource("icons/4.png"),null);
-        // Instantiate the component and add it to your ui
-        //layout1.addComponents(canvas = new Canvas());
         layout.addComponents(menu);
-        layout1.addComponents(layout, canvas = new Canvas());
+        layout1.addComponents(layout, canvas);
         setContent(layout1);
         // Draw a 20x20 filled rectangle with the upper left corner
         // in coordinate 10,10. It will be filled with the default
