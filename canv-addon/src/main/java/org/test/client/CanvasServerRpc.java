@@ -2,13 +2,16 @@ package org.test.client;
 
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.communication.ServerRpc;
+import org.test.client.item.Item;
 
 public interface CanvasServerRpc extends ServerRpc {
-    public void mouseMoved(MouseEventDetails med);
+    void mouseMoved(MouseEventDetails med);
 
-    public void mouseDown(MouseEventDetails med);
+    void mouseDown(MouseEventDetails med);
 
-    public void mouseUp(MouseEventDetails med);
+    void mouseUp(MouseEventDetails med);
 
-    public void imagesLoaded();
+    void imagesLoaded();
+
+    //public void addItem(Item item);
 }
