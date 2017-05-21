@@ -1,12 +1,6 @@
 package org.test.ui;
 
-
-import com.vaadin.annotations.Push;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.MouseEventDetails;
-import com.vaadin.ui.*;
-import com.vaadin.*;
-import com.vaadin.ui.themes.ValoTheme;
 import org.test.Canvas;
 
 import javax.servlet.annotation.WebServlet;
@@ -16,13 +10,13 @@ import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.ui.VerticalLayout;
 
 @Theme("demo")
 @SuppressWarnings("serial")
-@Push
 public class UI extends com.vaadin.ui.UI
 {
-    private static Rooms rooms = new Rooms();
+    private Canvas canvas;
 
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = UI.class)
@@ -31,28 +25,16 @@ public class UI extends com.vaadin.ui.UI
 
     @Override
     protected void init(VaadinRequest request) {
-        Room room = rooms.createRoom(this, 0);
-        Key<String> name = new Key<String>("MyRoom_v0.01");
-        rooms.addRoom(name, room);
+        VerticalLayout content = new VerticalLayout();
+        setContent(content);
 
-        Canvas canvas = room.getCanvas(this);
+        // Instantiate the component and add it to your ui
+        content.addComponent(canvas = new Canvas());
 
-        final VerticalLayout layout = new VerticalLayout();
-        final HorizontalLayout layout1 = new HorizontalLayout();
-        final MenuBar menu = new MenuBar();
-        final MenuBar.MenuItem pencil = menu.addItem("Pencil", new ThemeResource( "icons/png/pencil.png") , null);
-        final MenuBar.MenuItem size = pencil.addItem("Size",null,null);
-        size.addItem("1px",new ThemeResource("icons/1.png"),null);
-        size.addItem("2px",new ThemeResource("icons/2.png"),null);
-        size.addItem("3px",new ThemeResource("icons/3.png"),null);
-        size.addItem("4px",new ThemeResource("icons/4.png"),null);
-        layout.addComponents(menu);
-        layout1.addComponents(layout, canvas);
-        setContent(layout1);
         // Draw a 20x20 filled rectangle with the upper left corner
         // in coordinate 10,10. It will be filled with the default
         // color which is black.
-        //canvas.fillRect(10, 10, 20, 20);
+        canvas.fillRect(10, 10, 20, 20);
 
         canvas.addMouseMoveListener((MouseEventDetails mouseDetails) -> {
             System.out.println("Mouse moved at "
