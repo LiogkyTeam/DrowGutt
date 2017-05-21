@@ -22,6 +22,8 @@ public class Item implements Serializable, Blockable{
     protected String color;
 
     public Item () {
+        change();
+        id = identity++;
     }
 
     public Item(int x_max, int y_max, int x_min, int y_min) {
@@ -75,7 +77,7 @@ public class Item implements Serializable, Blockable{
         block = false;
     }
 
-    public boolean getBlock(){
+    public boolean getBlockState(){
         return block;
     }
 

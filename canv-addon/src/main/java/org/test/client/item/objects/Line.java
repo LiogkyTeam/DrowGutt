@@ -1,5 +1,6 @@
 package org.test.client.item.objects;
 
+import org.test.client.CanvasWidget;
 import org.test.client.item.Item;
 
 /**
@@ -10,6 +11,11 @@ public class Line extends Item{
     private int start_y;
     private int end_x;
     private int end_y;
+
+    public Line ()
+    {
+
+    }
 
     public Line(int start_x, int start_y, int end_x, int end_y, String color) {
         super();
@@ -29,5 +35,11 @@ public class Line extends Item{
         this.start_y = start_y;
         this.end_x = end_x;
         this.end_y = end_y;
+    }
+
+    public void draw(CanvasWidget canvas)
+    {
+        canvas.moveTo((double) start_x, (double) start_y);
+        canvas.lineTo((double) end_x, (double) end_y);
     }
 }

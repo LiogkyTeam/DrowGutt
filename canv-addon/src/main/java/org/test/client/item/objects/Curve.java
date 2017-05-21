@@ -1,5 +1,6 @@
 package org.test.client.item.objects;
 
+import org.test.client.CanvasWidget;
 import org.test.client.item.Item;
 
 /**
@@ -33,4 +34,13 @@ public class Curve extends Item {
         setBorders(x_min, y_min, x_max, y_max);
     }
 
+    public void draw(CanvasWidget canvas)
+    {
+        curve[0].draw(canvas);
+        for (int i = 1; i < curve.length; i++) {
+            canvas.moveTo((double) curve[i - 1].getX(), (double) curve[i - 1].getY());
+            curve[i].draw(canvas);
+            canvas.lineTo((double) curve[i].getX(), (double) curve[i].getY());
+        }
+    }
 }
