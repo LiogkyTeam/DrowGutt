@@ -20,7 +20,7 @@ public class Room {
     public String registerUI(long password, com.vaadin.ui.UI ui){
         if (identity != password) return "Wrong password, try join to room again";
         if (WorkEnv.containsKey(ui)) return "You have already registered";
-        Canvas canvas = new Canvas();
+        Canvas canvas = new Canvas(items);
         WorkEnv.put(ui, canvas);
         return "You successfully joined to room";
     }

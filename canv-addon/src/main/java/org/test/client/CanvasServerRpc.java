@@ -13,5 +13,5 @@ public interface CanvasServerRpc extends ServerRpc {
 
     void imagesLoaded();
 
-    //public void addItem(Item item);
+    void addItem(Item item);
 }

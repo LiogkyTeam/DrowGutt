@@ -29,6 +29,7 @@ import com.vaadin.client.ui.PostLayoutListener;
 import com.vaadin.client.ui.SimpleManagedLayout;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.ui.Connect;
+import org.test.client.item.Item;
 
 @SuppressWarnings("serial")
 @Connect(org.test.Canvas.class)
@@ -345,6 +346,12 @@ public class CanvasConnector extends AbstractComponentConnector implements
                     image.setVisible(false);
                     RootPanel.get().add(image);
                 }
+            }
+
+            //TODO fill this method
+            @Override
+            public void addItem(Item item){
+                item.draw(getWidget());
             }
         });
     }

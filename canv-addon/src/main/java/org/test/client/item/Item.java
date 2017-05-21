@@ -22,8 +22,6 @@ public class Item implements Serializable, Blockable{
     protected String color;
 
     public Item () {
-        change();
-        id = identity++;
     }
 
     public Item(int x_max, int y_max, int x_min, int y_min) {
@@ -77,7 +75,7 @@ public class Item implements Serializable, Blockable{
         block = false;
     }
 
-    public boolean getBlockState(){
+    public boolean getBlock(){
         return block;
     }
 
@@ -149,7 +147,7 @@ public class Item implements Serializable, Blockable{
     }
 
     //this method necessary to override!!!
-    public void Drow(CanvasWidget canvas){
+    public void draw(CanvasWidget canvas){
         //Write here some default realization
     }
 }

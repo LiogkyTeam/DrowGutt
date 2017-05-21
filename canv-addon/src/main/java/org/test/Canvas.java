@@ -3,10 +3,13 @@ package org.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vaadin.ui.UI;
 import org.test.client.*;
 
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.AbstractComponent;
+import org.test.client.item.Item;
+import org.test.client.item.ItemContainer;
 
 /**
  * HTML5 Canvas add-on for Vaadin 7.
@@ -24,11 +27,16 @@ public class Canvas extends AbstractComponent {
     private final List<CanvasMouseDownListener> mouseDownListeners = new ArrayList<CanvasMouseDownListener>();
     private final List<CanvasMouseUpListener> mouseUpListeners = new ArrayList<CanvasMouseUpListener>();
     private final CanvasClientRpc rpc = getRpcProxy(CanvasClientRpc.class);
+    private final UI ui;
+    private ItemContainer items;
+    private final CanvasUpdateListener listener;
 
     /**
      * Instantiates a new canvas.
      */
-    public Canvas() {
+    public Canvas(ItemContainer items) {
+        this.items = items;
+        ui = UI.getCurrent();
         registerRpc(new CanvasServerRpc() {
             @Override
             public void imagesLoaded() {
@@ -49,7 +57,27 @@ public class Canvas extends AbstractComponent {
             public void mouseUp(MouseEventDetails mouseDetails) {
                 fireMouseUp(mouseDetails);
             }
+
+            @Override
+            public void addItem(Item item){
+                items.addItem(listener, item);
+            }
         });
+
+        listener = new CanvasUpdateListener(ui){
+            @Override
+            public void addedItem(Item item){
+                getUi().accessSynchronously(() -> getRpcProxy(CanvasClientRpc.class).addItem(item));
+            }
+            //TODO
+            @Override
+            public void deletedItem(Item item){}
+            //TODO
+            @Override
+            public void changedItem(Item item){}
+        };
+
+        items.addListener(ui.getId(), listener);
     }
 
     /**
