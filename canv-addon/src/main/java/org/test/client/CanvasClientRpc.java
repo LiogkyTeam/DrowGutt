@@ -2,6 +2,7 @@ package org.test.client;
 
 
 import com.vaadin.shared.communication.ClientRpc;
+import org.test.client.item.Item;
 
 public interface CanvasClientRpc extends ClientRpc {
     public void drawImage1(String url, Double offsetX, Double offsetY);
@@ -129,4 +130,6 @@ public interface CanvasClientRpc extends ClientRpc {
     // beginPath() and moveTo() methods to define a starting point.
     // public void bezierCurveTo(Integer cp1x, Integer cp1y, Integer cp2x,
     // Integer cp2y, Integer x, Integer y);
+
+    public void addItem(Item item);
 }
