@@ -17,35 +17,61 @@ public class RoomChoosePage extends VerticalLayout implements View {
 		
 		// add layout with room number and room password fields
 		FormLayout content = new FormLayout(); /* FormLayout lays the components and their captions out in two columns */
-		TextField roomno = new TextField("Room Number");
-		content.addComponent(roomno);
+		TextField roomName = new TextField("Room Name");
+		content.addComponent(roomName);
 		PasswordField password = new PasswordField("Room Password");
 		content.addComponent(password);
 		
 		// add button for sending credentials
 		Button send = new Button("Enter the Room");
-        /*
-        Entering a room will be fixed soon
-        
+		
 		send.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				if(VaadinloginUI.AUTH.authenticate(username.getValue(), password.getValue())) {
-					VaadinSession.getCurrent().setAttribute("user", username.getValue());
-					getUI().getNavigator().addView(SecurePage.NAME, SecurePage.class);
-					getUI().getNavigator().addView(OtherSecurePage.NAME, OtherSecurePage.class);
-					Page.getCurrent().setUriFragment("!"+SecurePage.NAME);
+				if( != null) {
+					
 				} else {
 					Notification.show("Invalid credentials", Notification.Type.ERROR_MESSAGE);
 				}
 			}
 		});
-        */
+		
 		content.addComponent(send);
 		content.setSizeUndefined();
 		content.setMargin(true);
 		panel.setContent(content);
 		setComponentAlignment(panel, Alignment.MIDDLE_CENTER);
+		
+		
+		
+		// add panel2 to the layout
+		Panel panel2 = new Panel("Create a Room");
+		panel2.setSizeUndefined();
+		addComponent(panel2);
+		
+		// add layout with room number and room password fields
+		FormLayout content2 = new FormLayout(); /* FormLayout lays the components and their captions out in two columns */
+		TextField roomName2 = new TextField("Room Name");
+		content2.addComponent(roomName2);
+		PasswordField password2 = new PasswordField("Room Password");
+		content2.addComponent(password2);
+		
+		// add button for sending credentials
+		Button send2 = new Button("Create a Room");
+		
+		send2.addClickListener(new ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				
+			}
+		});
+		
+		content2.addComponent(send2);
+		content2.setSizeUndefined();
+		content2.setMargin(true);
+		panel2.setContent(content2);
+		setComponentAlignment(panel2, Alignment.MIDDLE_CENTER);
+		
 	}
 	
 	@Override
