@@ -1,6 +1,6 @@
 package org.test.ui;
 
-
+import com.vaadin.annotations.Push;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.*;
@@ -18,17 +18,27 @@ import com.vaadin.server.VaadinServlet;
 
 @Theme("demo")
 @SuppressWarnings("serial")
+@Push
 public class UI extends com.vaadin.ui.UI
 {
-    private Canvas canvas;
-    public static Authentication AUTH;    
-        
+    private static Rooms rooms = new Rooms();
+
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = UI.class)
     public static class Servlet extends VaadinServlet {
     }
-    
-    public void setRoom(Room room) {
+
+    @Override
+    protected void init(VaadinRequest request) {
+        Key<String> name = new Key<String>("MyRoom_v0.01");
+        Room room;
+        try {
+            room = rooms.createRoom(name, 0, getUI());
+        } catch(NonUniqName e) {
+            //some handling
+            return;
+        }
+
         Canvas canvas = room.getCanvas(this);
 
         final VerticalLayout layout = new VerticalLayout();
@@ -70,18 +80,18 @@ public class UI extends com.vaadin.ui.UI
     @Override
     protected void init(VaadinRequest request) {
         AUTH = new Authentication();
-        
+
 	new Navigator(this, this);
 	getNavigator().addView(LoginPage.NAME, LoginPage.class);
 	getNavigator().setErrorView(LoginPage.class);
-	
+
 	Page.getCurrent().addUriFragmentChangedListener(new UriFragmentChangedListener() {
 		@Override
         	public void uriFragmentChanged(UriFragmentChangedEvent event) {
                  	router(event.getUriFragment());
 	        }
 	});
-	
+
 	router("");
     }
 }

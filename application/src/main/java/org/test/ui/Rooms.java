@@ -4,6 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Rooms {
+    private static Rooms ourInstance = new Rooms();
+    public static Rooms getInstance() {
+        return ourInstance;
+    }
+    private Rooms(){
+
+    }
+
     private Map<Key, Room> rooms = new HashMap<Key, Room>();
 
     private Room newRoom(com.vaadin.ui.UI ui, long password){
