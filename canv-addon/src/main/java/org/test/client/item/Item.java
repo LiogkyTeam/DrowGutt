@@ -77,7 +77,7 @@ public class Item implements Serializable, Blockable{
         block = false;
     }
 
-    public boolean getBlockState(){
+    public boolean getBlock(){
         return block;
     }
 
