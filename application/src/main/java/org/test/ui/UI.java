@@ -1,5 +1,6 @@
 package org.test.ui;
 
+
 import com.vaadin.annotations.Push;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.MouseEventDetails;
@@ -8,22 +9,20 @@ import com.vaadin.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.test.Canvas;
 
-
-import javax.servlet.annotation.WebServlet;;
+import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.VerticalLayout;
 
 @Theme("demo")
 @SuppressWarnings("serial")
 @Push
 public class UI extends com.vaadin.ui.UI
 {
-    private static Rooms rooms = new Rooms();
+    private static Rooms rooms = Rooms.getInstance();
 
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = UI.class)
