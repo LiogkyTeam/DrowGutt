@@ -10,6 +10,7 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.AbstractComponent;
 import org.test.client.item.Item;
 import org.test.client.item.ItemContainer;
+import org.test.client.item.objects.Rectangle;
 
 /**
  * HTML5 Canvas add-on for Vaadin 7.
@@ -71,14 +72,18 @@ public class Canvas extends AbstractComponent {
             }
             //TODO
             @Override
-            public void deletedItem(Item item){}
+            public void deletedItem(Item item){
+            }
             //TODO
             @Override
-            public void changedItem(Item item){}
+            public void changedItem(Item item){
+                //getUi().accessSynchronously(() -> getRpcProxy(CanvasClientRpc.class).changeItem(items, item));
+            }
         };
 
         items.addListener(ui.getId(), listener);
     }
+
 
     /**
      * Draw an image, other canvas, or video onto this canvas.
@@ -786,6 +791,28 @@ public class Canvas extends AbstractComponent {
 
     public void loadImages(String[] urls) {
         rpc.loadImages(urls);
+    }
+
+    public void startDrawLines(String color, int thickness){
+        rpc.startDrawLines(color, thickness);
+    }
+    public void startDrawCurves(String color, int thickness){
+        rpc.startDrawCurves(color, thickness);
+    }
+    public void startDrawRectangles(String color, int thickness){
+        rpc.startDrawRectangles(color, thickness);
+    }
+    public void startDrawCubicBezier(String color, int thickness){
+        rpc.startDrawCubicBezier(color, thickness);
+    }
+    public void startDrawQuadBezier(String color, int thickness){
+        rpc.startDrawQuadBezier(color, thickness);
+    }
+    public void startDrawPoints(String color, int thickness){
+        rpc.startDrawPoints(color, thickness);
+    }
+    public void endDraw(){
+        rpc.endDraw();
     }
 
     /**

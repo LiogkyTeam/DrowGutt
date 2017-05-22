@@ -3,6 +3,7 @@ package org.test.client;
 
 import com.vaadin.shared.communication.ClientRpc;
 import org.test.client.item.Item;
+import org.test.client.item.ItemContainer;
 
 public interface CanvasClientRpc extends ClientRpc {
     public void drawImage1(String url, Double offsetX, Double offsetY);
@@ -131,5 +132,16 @@ public interface CanvasClientRpc extends ClientRpc {
     // public void bezierCurveTo(Integer cp1x, Integer cp1y, Integer cp2x,
     // Integer cp2y, Integer x, Integer y);
 
-    public void addItem(Item item);
+    void addItem(Item item);
+    //public void changeItem(ItemContainer items, Item item);
+
+    //void test();
+
+    void startDrawLines(String color, int thickness);
+    void startDrawCurves(String color, int thickness);
+    void startDrawRectangles(String color, int thickness);
+    void startDrawCubicBezier(String color, int thickness);
+    void startDrawQuadBezier(String color, int thickness);
+    void startDrawPoints(String color, int thickness);
+    void endDraw();
 }
