@@ -21,6 +21,7 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.MouseEventDetailsBuilder;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
@@ -30,6 +31,7 @@ import com.vaadin.client.ui.SimpleManagedLayout;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.ui.Connect;
 import org.test.client.item.Item;
+import org.test.client.item.ItemContainer;
 
 @SuppressWarnings("serial")
 @Connect(org.test.Canvas.class)
@@ -353,6 +355,15 @@ public class CanvasConnector extends AbstractComponentConnector implements
             public void addItem(Item item){
                 item.draw(getWidget());
             }
+
+            /*@Override
+            public void changeItem(ItemContainer items, Item item){
+                getWidget().clear();
+                for (Item draw: items.getItems()) draw.draw(getWidget());
+            }*/
+
+            /*public void test(){
+            }*/
         });
     }
 
@@ -387,6 +398,13 @@ public class CanvasConnector extends AbstractComponentConnector implements
 
     public void clearCommands() {
         commands.clear();
+    }
+
+    @Override
+    protected Widget createWidget(){
+        CanvasWidget widget = new CanvasWidget();
+        widget.addRpc(rpc);
+        return widget;
     }
 
     @Override
