@@ -350,7 +350,7 @@ public class CanvasConnector extends AbstractComponentConnector implements
                 }
             }
 
-            //TODO fill this method
+
             @Override
             public void addItem(Item item){
                 item.draw(getWidget());
@@ -364,6 +364,35 @@ public class CanvasConnector extends AbstractComponentConnector implements
 
             /*public void test(){
             }*/
+            //TODO: Stepan, fill this method
+            @Override
+            public void startDrawLines(String color, int thickness){
+                ///getWidget().
+            }
+            @Override
+            public void startDrawCurves(String color, int thickness){
+                ///getWidget().
+            }
+            @Override
+            public void startDrawPoints(String color, int thickness){
+                ///getWidget().
+            }
+            @Override
+            public void startDrawRectangles(String color, int thickness){
+                ///getWidget().
+            }
+            @Override
+            public void startDrawCubicBezier(String color, int thickness){
+                ///getWidget().
+            }
+            @Override
+            public void startDrawQuadBezier(String color, int thickness){
+                ///getWidget().
+            }
+            @Override
+            public void endDraw(){
+                //getWidget().
+            }
         });
     }
 
