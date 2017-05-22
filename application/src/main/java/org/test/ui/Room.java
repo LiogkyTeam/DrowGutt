@@ -14,15 +14,15 @@ public class Room {
 
     public Room(long password, com.vaadin.ui.UI ui){
         identity = password;
-        registerUI(password, ui);
-    }
-
-    public String registerUI(long password, com.vaadin.ui.UI ui){
-        if (identity != password) return "Wrong password, try join to room again";
-        if (WorkEnv.containsKey(ui)) return "You have already registered";
         Canvas canvas = new Canvas(items);
         WorkEnv.put(ui, canvas);
-        return "You successfully joined to room";
+    }
+
+    public void registerUI(long password, com.vaadin.ui.UI ui) throws WrongPassword{
+        if (identity != password) throw new WrongPassword();
+        if (WorkEnv.containsKey(ui)) return;
+        Canvas canvas = new Canvas(items);
+        WorkEnv.put(ui, canvas);
     }
 
     public Canvas getCanvas(com.vaadin.ui.UI ui){

@@ -6,15 +6,25 @@ import java.util.Map;
 public class Rooms {
     private Map<Key, Room> rooms = new HashMap<Key, Room>();
 
-    public Room createRoom(com.vaadin.ui.UI ui, long password){
+    private Room newRoom(com.vaadin.ui.UI ui, long password){
         return new Room(password, ui);
     }
 
-    public String addRoom(Key name, Room room){
-        if (rooms.containsKey(name))
-            return "Sorry, this room-name is occupied";
+    private void addRoom(Key name, Room room) throws NonUniqName{
+        if (rooms.containsKey(name)) throw new NonUniqName();
         rooms.put(name, room);
-        return "Room is successfully added";
+    }
+
+    public Room createRoom(Key name, long password, com.vaadin.ui.UI ui) throws NonUniqName{
+        Room room = newRoom(ui, password);
+        addRoom(name, room);
+        return room;
+    }
+
+    public Room enterTheRoom(Key key, long password, com.vaadin.ui.UI ui) throws RoomNotExists, WrongPassword{
+        if (!rooms.containsKey(key)) throw new RoomNotExists();
+        rooms.get(key).registerUI(password, ui);
+        return rooms.get(key);
     }
 
     public boolean RoomNameEmpty(Key name){

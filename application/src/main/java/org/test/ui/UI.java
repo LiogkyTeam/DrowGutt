@@ -31,9 +31,14 @@ public class UI extends com.vaadin.ui.UI
 
     @Override
     protected void init(VaadinRequest request) {
-        Room room = rooms.createRoom(this, 0);
         Key<String> name = new Key<String>("MyRoom_v0.01");
-        rooms.addRoom(name, room);
+        Room room;
+        try {
+            room = rooms.createRoom(name, 0, getUI());
+        } catch(NonUniqName e) {
+            //some handling
+            return;
+        }
 
         Canvas canvas = room.getCanvas(this);
 
