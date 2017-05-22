@@ -16,6 +16,7 @@ import java.util.List;
 public class CanvasWidget extends VerticalPanel {
     final com.google.gwt.canvas.client.Canvas canv;
     private Context2d ctx;
+    private CanvasServerRpc rpc;
 
     public CanvasWidget(){
         canv = com.google.gwt.canvas.client.Canvas.createIfSupported();
@@ -232,6 +233,10 @@ public class CanvasWidget extends VerticalPanel {
 
     public void setGradientStrokeStyle(final CanvasGradient gradient) {
         ctx.setStrokeStyle(gradient);
+    }
+
+    protected void addRpc(CanvasServerRpc rpc){
+        this.rpc = rpc;
     }
 
 }
