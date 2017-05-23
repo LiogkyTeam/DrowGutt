@@ -144,4 +144,7 @@ public interface CanvasClientRpc extends ClientRpc {
     void startDrawQuadBezier(String color, int thickness);
     void startDrawPoints(String color, int thickness);
     void endDraw();
+    void setCanvSizes(int width, int height);
+    void setCanvWidth(int width);
+    void setCanvHeight(int height);
 }

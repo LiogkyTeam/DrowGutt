@@ -814,6 +814,16 @@ public class Canvas extends AbstractComponent {
     public void endDraw(){
         rpc.endDraw();
     }
+    public void setCanvSizes(int width, int height){
+        rpc.setCanvSizes(width, height);
+    }
+    public void setCanvWidth(int width){
+        rpc.setCanvWidth(width);
+    }
+    public void setCanvHeight(int height){
+        rpc.setCanvHeight(height);
+    }
+
 
     /**
      * The listener interface for receiving canvasImageLoad events. The class
