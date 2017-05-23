@@ -15,7 +15,7 @@ canvas {
 	background-color: white;
 	border: 1px solid powderblue;
 	border-radius: 10px;
-
+	margin-left: 15px;
 }
 .v-button-caption {
 	color: black;
@@ -25,22 +25,81 @@ canvas {
 	background-image: url(images/3.jpg);
 	font-size: 12pt;
 	font-weight: bold;
-	color: red;
+	//color: red;
 	border-color:  deepskyblue;
 	border-radius: 75px;
 	border-width: 2px;
+	margin: 15px;
 }
-.v-pressed.v-button-mystyle {
-	background-color: brown;
-	color: lime;
+.v-menubar-mystyle {
+	background-color: navajowhite;
+	background-image: url(images/3.jpg);
+	font-size: 12pt;
+	font-weight: bold;
+	color: black;
+	border-color:  deepskyblue;
+	border-radius: 75px;
+	border-width: 2px;
+	margin: 15px;
+}
+.v-menubar-submenu-mystyle {
+	background-color: navajowhite;
+	background-image: url(images/3.jpg);
+	font-size: 12pt;
+	font-weight: bold;
+	color: black;
+	border-color:  deepskyblue;
+	border-width: 2px;
+}
+
+.v-menubar-menuitem-mystyle {
+	background-color: navajowhite;
+	background-image: url(images/3.jpg);
+	font-size: 12pt;
+	font-weight: bold;
+	color: black;
+	border-color:  deepskyblue;
+	border-width: 2px;
+}
+.v-menubar-menuitem-selected-mystyle {
+	border-color: blue;
+	background-color: navajowhite;
+	background-image: url(images/3.jpg);
+	font-size: 12pt;
+	font-weight: bold;
+	color: black;
+	border-width: 2px;
+}
+.v-menubar-menuitem-highlight {
+	border-color: blue;
 }
 .v-vertical > .v-spacing {
 	height: 40px;
+}
+.v-label-labelstyle {
+	background-color: antiquewhite;
+	color: black;
+	border: 1px solid darkblue;
+	font-weight: 300;
+	font-style: normal;
+	border-radius: 5px;
+	max-width: 165px;
+	margin: 15px;
+}
+.v-abstractcolorpicker-mystyle {
+	border-color: blue;
+	background-color: navajowhite;
+	background-image: url(images/3.jpg);
+	font-size: 12pt;
+	font-weight: bold;
+	color: black;
+	border-width: 2px;
+	margin: 15px;
 }
 
 .v-app {
 	background-image: url(images/1.png);
 	background-size: 100%;
-	background-position: top;
+	background-position: center, center;
 	background-repeat: no-repeat; }
 
