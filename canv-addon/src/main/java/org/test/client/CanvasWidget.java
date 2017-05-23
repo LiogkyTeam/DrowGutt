@@ -4,38 +4,57 @@ import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import com.google.gwt.user.client.Window;
+import org.test.client.item.objects.Line;
+import org.test.client.item.objects.Point;
 
 // Extend any GWT Widget
 public class CanvasWidget extends VerticalPanel {
     final com.google.gwt.canvas.client.Canvas canv;
     private Context2d ctx;
     private CanvasServerRpc rpc;
+    static final float dist_buffer = 10;
+    static final int updateTime = 50;
+    long lastUpdateTime;
+    int x, y;
+    public String color;
+    ArrayList<Point> points = new ArrayList<Point>();
 
     public CanvasWidget(){
         canv = com.google.gwt.canvas.client.Canvas.createIfSupported();
         add(canv);
         ctx = canv.getContext2d();
+        color = "ff0000";
+
+        addMouseDownHandler(new MouseDownHandler() {
+            @Override
+            public void onMouseDown(MouseDownEvent mouseDownEvent) {
+                startDrawingCurve(mouseDownEvent.getClientX(), mouseDownEvent.getClientY());
+            }
+        });
 
         setStyleName("widget");
     }
 
-    public void addMouseMoveHandler(MouseMoveHandler handler){
-        canv.addMouseMoveHandler(handler);
+    public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler){
+        return canv.addMouseMoveHandler(handler);
     }
 
-    public void addMouseUpHandler(MouseUpHandler handler){
-        canv.addMouseUpHandler(handler);
+    public HandlerRegistration addMouseUpHandler(MouseUpHandler handler){
+        return canv.addMouseUpHandler(handler);
     }
 
-    public void addMouseDownHandler(MouseDownHandler handler){
-        canv.addMouseDownHandler(handler);
+    public HandlerRegistration addMouseDownHandler(MouseDownHandler handler){
+        return canv.addMouseDownHandler(handler);
     }
 
     public int getCoordinateSpaceWidth(){
@@ -52,6 +71,12 @@ public class CanvasWidget extends VerticalPanel {
 
     public void setCoordinateSpaceHeight(int height){
         canv.setCoordinateSpaceWidth(height);
+    }
+
+    public void setSizes(int width, int height) {
+        canv.setCoordinateSpaceWidth(height);
+        canv.setCoordinateSpaceWidth(width);
+        canv.setSize(width + "px", height + "px");
     }
 
     public Context2d getContext2d(){
@@ -239,4 +264,54 @@ public class CanvasWidget extends VerticalPanel {
         this.rpc = rpc;
     }
 
+    protected float getDistance(float x1, float y1, float x2, float y2) {
+        return (float) Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+    }
+
+    protected void startDrawingLine(int clientX, int clientY) {
+        x = clientX - canv.getAbsoluteLeft() + Window.getScrollLeft();
+        y = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
+    }
+
+    protected void endDrawingLine(int clientX, int clientY){
+        Line line = new Line(x, y, clientX, clientY, color);
+        rpc.addItem(line);
+    }
+
+    protected void startDrawingPoint(int clientX, int clientY) {
+        Point point = new Point(clientX, clientY, color);
+        rpc.addItem(point);
+    }
+
+    protected void startDrawingCurve(int clientX, int clientY) {
+        x = clientX - canv.getAbsoluteLeft() + Window.getScrollLeft();
+        y = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
+    }
+
+    protected void continueDrawingCurve(int clientX, int clientY) {
+        int newX = clientX - canv.getAbsoluteLeft() + Window.getScrollLeft();
+        int newY = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
+
+        if (getDistance(x, y, newX, newY) > dist_buffer) {
+            ctx.beginPath();
+            ctx.setLineWidth(5);
+            ctx.setStrokeStyle(color);
+            ctx.moveTo(x, y);
+            ctx.lineTo(newX, newY);
+            ctx.moveTo(newX, newY);
+            ctx.closePath();
+            ctx.stroke();
+            points.add(new Point(x, y, color));
+            (points.get(points.size() - 1)).draw(this);
+            x = newX;
+            y = newY;
+            if (lastUpdateTime + updateTime < new Date().getTime()) {
+                endDrawingCurve(clientX, clientY);
+            }
+        }
+    }
+
+    protected void endDrawingCurve(int clientX, int clientY) {
+
+    }
 }
