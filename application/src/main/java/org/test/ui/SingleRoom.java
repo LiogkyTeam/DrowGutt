@@ -12,7 +12,7 @@ import org.test.Canvas;
 public class SingleRoom extends VerticalLayout implements View {
     public static final String NAME = "Room";
 
-    public SingleRoom(){
+    public SingleRoom(){ /*
         Canvas canvas = room.getCanvas(ui);
 
         final VerticalLayout layout = new VerticalLayout();
@@ -49,7 +49,7 @@ public class SingleRoom extends VerticalLayout implements View {
     }
 
     @Override
-    public void enter(ViewChangeEvent event) {
+    public void enter(ViewChangeEvent event) { */
     }
 
 }
