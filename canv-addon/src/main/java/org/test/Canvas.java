@@ -24,17 +24,13 @@ import org.test.client.item.objects.Rectangle;
 @SuppressWarnings("serial")
 public class Canvas extends AbstractComponent {
     private final List<CanvasImageLoadListener> imageLoadListeners = new ArrayList<CanvasImageLoadListener>();
-    private final List<CanvasMouseMoveListener> mouseMoveListeners = new ArrayList<CanvasMouseMoveListener>();
-    private final List<CanvasMouseDownListener> mouseDownListeners = new ArrayList<CanvasMouseDownListener>();
-    private final List<CanvasMouseUpListener> mouseUpListeners = new ArrayList<CanvasMouseUpListener>();
     private final CanvasClientRpc rpc = getRpcProxy(CanvasClientRpc.class);
     private final UI ui;
     private ItemContainer items;
     private final CanvasUpdateListener listener;
 
-    /**
-     * Instantiates a new canvas.
-     */
+    //Instantiates a new canvas.
+
     public Canvas(ItemContainer items) {
         this.items = items;
         ui = UI.getCurrent();
@@ -42,21 +38,6 @@ public class Canvas extends AbstractComponent {
             @Override
             public void imagesLoaded() {
                 fireImagesLoaded();
-            }
-
-            @Override
-            public void mouseMoved(MouseEventDetails mouseDetails) {
-                fireMouseMove(mouseDetails);
-            }
-
-            @Override
-            public void mouseDown(MouseEventDetails mouseDetails) {
-                fireMouseDown(mouseDetails);
-            }
-
-            @Override
-            public void mouseUp(MouseEventDetails mouseDetails) {
-                fireMouseUp(mouseDetails);
             }
 
             @Override
@@ -82,6 +63,8 @@ public class Canvas extends AbstractComponent {
         };
 
         items.addListener(ui.getId(), listener);
+
+        ui.addDetachListener((e) -> {Canvas.this.items.removeListener(ui.getId(), listener);});
     }
 
 
@@ -872,150 +855,6 @@ public class Canvas extends AbstractComponent {
         }
     }
 
-    /**
-     * The listener interface for receiving CanvasMouseMove events. The class
-     * that is interested in processing a CanvasMouseMove event implements this
-     * interface, and the object created with that class is registered with a
-     * component using the component's
-     * <code>addCanvasMouseMoveListener</code> method. When
-     * the CanvasMouseMove event occurs, that object's appropriate
-     * method is invoked.
-     */
-    public interface CanvasMouseMoveListener {
-
-        /**
-         * The canvas mouse move event.
-         *
-         * @param mouseDetails
-         *				   the details
-         */
-        public void onMove(MouseEventDetails mouseDetails);
-    }
-
-    /**
-     * Adds a CanvasMouseMoveListener.
-     *
-     * @param listener
-     *            the listener
-     */
-    public void addMouseMoveListener(CanvasMouseMoveListener listener) {
-        if (!mouseMoveListeners.contains(listener)) {
-            mouseMoveListeners.add(listener);
-            getState().listenMouseMove = true;
-        }
-    }
-
-    /**
-     * Removes a CanvasMouseMoveListener.
-     *
-     * @param listener
-     *            the listener
-     */
-    public void removeListener(CanvasMouseMoveListener listener) {
-        if (mouseMoveListeners.contains(listener)) {
-            mouseMoveListeners.remove(listener);
-        }
-    }
-
-    private void fireMouseMove(MouseEventDetails mouseDetails) {
-        for (CanvasMouseMoveListener listener : mouseMoveListeners) {
-            listener.onMove(mouseDetails);
-        }
-    }
-
-    /**
-     * The listener interface for receiving CanvasMouseDown events. The class
-     * that is interested in processing a CanvasMouseDown event implements this
-     * interface, and the object created with that class is registered with a
-     * component using the component's
-     * <code>addCanvasMouseDownListener</code> method. When
-     * the CanvasMouseDown event occurs, that object's appropriate
-     * method is invoked.
-     */
-    public interface CanvasMouseDownListener {
-
-        /**
-         * The canvas mouse Down event.
-         */
-        public void onMouseDown(MouseEventDetails mouseDetails);
-    }
-
-    /**
-     * Adds a CanvasMouseDownListener.
-     *
-     * @param listener
-     *            the listener
-     */
-    public void addMouseDownListener(CanvasMouseDownListener listener) {
-        if (!mouseDownListeners.contains(listener)) {
-            mouseDownListeners.add(listener);
-        }
-    }
-
-    /**
-     * Removes a CanvasMouseDownListener.
-     *
-     * @param listener
-     *            the listener
-     */
-    public void removeListener(CanvasMouseDownListener listener) {
-        if (mouseDownListeners.contains(listener)) {
-            mouseDownListeners.remove(listener);
-        }
-    }
-
-    private void fireMouseDown(MouseEventDetails mouseDetails) {
-        for (CanvasMouseDownListener listener : mouseDownListeners) {
-            listener.onMouseDown(mouseDetails);
-        }
-    }
-
-    /**
-     * The listener interface for receiving CanvasMouseUp events. The class that
-     * is interested in processing a CanvasMouseUp event implements this
-     * interface, and the object created with that class is registered with a
-     * component using the component's
-     * <code>addCanvasMouseUpListener</code> method. When
-     * the CanvasMouseUp event occurs, that object's appropriate
-     * method is invoked.
-     */
-    public interface CanvasMouseUpListener {
-
-        /**
-         * The canvas mouse Down event.
-         */
-        public void onMouseUp(MouseEventDetails mouseDetails);
-    }
-
-    /**
-     * Adds a CanvasMouseUpListener.
-     *
-     * @param listener
-     *            the listener
-     */
-    public void addMouseUpListener(CanvasMouseUpListener listener) {
-        if (!mouseUpListeners.contains(listener)) {
-            mouseUpListeners.add(listener);
-        }
-    }
-
-    /**
-     * Removes a CanvasMouseUpListener.
-     *
-     * @param listener
-     *            the listener
-     */
-    public void removeListener(CanvasMouseUpListener listener) {
-        if (mouseUpListeners.contains(listener)) {
-            mouseUpListeners.remove(listener);
-        }
-    }
-
-    private void fireMouseUp(MouseEventDetails mouseDetails) {
-        for (CanvasMouseUpListener listener : mouseUpListeners) {
-            listener.onMouseUp(mouseDetails);
-        }
-    }
 
     @Override
     public CanvasState getState() {

@@ -12,32 +12,19 @@ import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.client.MouseEventDetailsBuilder;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractComponentConnector;
-import com.vaadin.client.ui.PostLayoutListener;
-import com.vaadin.client.ui.SimpleManagedLayout;
-import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.ui.Connect;
 import org.test.client.item.Item;
-import org.test.client.item.ItemContainer;
 
 @SuppressWarnings("serial")
 @Connect(org.test.Canvas.class)
-public class CanvasConnector extends AbstractComponentConnector implements
-        SimpleManagedLayout, PostLayoutListener {
-    private boolean needsDraw = false;
+public class CanvasConnector extends AbstractComponentConnector{
 
     private final List<Command> commands;
 
@@ -53,26 +40,6 @@ public class CanvasConnector extends AbstractComponentConnector implements
     @Override
     protected void init() {
         super.init();
-
-        getWidget().addMouseDownHandler(new MouseDownHandler() {
-            @Override
-            public void onMouseDown(MouseDownEvent event) {
-                MouseEventDetails med = MouseEventDetailsBuilder
-                        .buildMouseEventDetails(event.getNativeEvent(),
-                                getWidget().getElement());
-                rpc.mouseDown(med);
-            }
-        });
-
-        getWidget().addMouseUpHandler(new MouseUpHandler() {
-            @Override
-            public void onMouseUp(MouseUpEvent event) {
-                MouseEventDetails med = MouseEventDetailsBuilder
-                        .buildMouseEventDetails(event.getNativeEvent(),
-                                getWidget().getElement());
-                rpc.mouseUp(med);
-            }
-        });
 
         registerRpc(CanvasClientRpc.class, new CanvasClientRpc() {
             private static final long serialVersionUID = -7521521510799765779L;
@@ -305,9 +272,7 @@ public class CanvasConnector extends AbstractComponentConnector implements
             }
 
             @Override
-            public void closePath() {
-                runCommand(() -> {getWidget().closePath();});
-            }
+            public void closePath() {runCommand(() -> {getWidget().closePath();});}
 
             @Override
             public void setGlobalCompositeOperation(final String mode) {
@@ -356,18 +321,10 @@ public class CanvasConnector extends AbstractComponentConnector implements
                 item.draw(getWidget());
             }
 
-            /*@Override
-            public void changeItem(ItemContainer items, Item item){
-                getWidget().clear();
-                for (Item draw: items.getItems()) draw.draw(getWidget());
-            }*/
 
-            /*public void test(){
-            }*/
-            //TODO: Stepan, fill this method
             @Override
             public void startDrawLines(String color, int thickness){
-                //getWidget().
+                getWidget().drawLines(color, thickness);
             }
             @Override
             public void startDrawCurves(String color, int thickness){
@@ -406,30 +363,6 @@ public class CanvasConnector extends AbstractComponentConnector implements
         });
     }
 
-    @Override
-    public void layout() {
-        int newHt = getWidget().getElement().getOffsetHeight();
-        if (newHt != getWidget().getCoordinateSpaceHeight()) {
-            getWidget().setCoordinateSpaceHeight(newHt);
-            needsDraw = true;
-        }
-
-        int newWt = getWidget().getElement().getOffsetWidth();
-        if (newWt != getWidget().getCoordinateSpaceWidth()) {
-            getWidget().setCoordinateSpaceWidth(newWt);
-            needsDraw = true;
-        }
-    }
-
-    @Override
-    public void postLayout() {
-        if (needsDraw) {
-            for (Command cmd : commands)
-                cmd.execute();
-            needsDraw = false;
-        }
-    }
-
     public void runCommand(Command command) {
         if (commands.add(command))
             command.execute();
@@ -460,24 +393,6 @@ public class CanvasConnector extends AbstractComponentConnector implements
     @Override
     public void onStateChanged(StateChangeEvent stateChangeEvent) {
         super.onStateChanged(stateChangeEvent);
-
-        // Only add a mouse move handler if someone is interested in, as
-        // otherwise
-        // they would generate a large amount of server side traffic.
-        if (stateChangeEvent.hasPropertyChanged("listenMouseMove")
-                && getState().listenMouseMove)
-            getWidget().addMouseMoveHandler(new MouseMoveHandler() {
-                @Override
-                public void onMouseMove(MouseMoveEvent event) {
-                    if (getState().listenMouseMove) {
-                        MouseEventDetails med = MouseEventDetailsBuilder
-                                .buildMouseEventDetails(event.getNativeEvent(),
-                                        getWidget().getElement());
-
-                        rpc.mouseMoved(med);
-                    }
-                }
-            });
     }
 
 }

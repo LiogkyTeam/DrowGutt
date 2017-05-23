@@ -15,6 +15,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.Window;
 import org.test.client.item.objects.Curve;
+import org.test.client.item.Item;
 import org.test.client.item.objects.Line;
 import org.test.client.item.objects.Point;
 import org.test.client.item.objects.Rectangle;
@@ -312,27 +313,18 @@ public class CanvasWidget extends VerticalPanel {
         y = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
     }
 
-    protected void endDrawingLine(int clientX, int clientY){
+    protected void endDrawingLine(String color, int thickness, int clientX, int clientY){
         int x1 = clientX - canv.getAbsoluteLeft() + Window.getScrollLeft();
         int y1 = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
-        //if (x1 < 0 || y1 < 0 || x < 0 || y < 0 || x1 > 570 || x > 570 || y1 > 570 || y > 570)
-        //setSizes(200, 200);
         Context2d ctx = canv.getContext2d();
         ctx.beginPath();
-        ctx.setLineWidth(5);
-        ctx.setStrokeStyle("000000");
+        ctx.setLineWidth(thickness);
+        ctx.setStrokeStyle(color);
         ctx.moveTo(x, y);
         ctx.lineTo(x1, y1);
         ctx.closePath();
         ctx.stroke();
-        ctx.beginPath();
-        ctx.setLineWidth(5);
-        ctx.setStrokeStyle("ff0000");
-        ctx.moveTo(0, 20);
-        ctx.lineTo(100, 100);
-        ctx.closePath();
-        ctx.stroke();
-        Line line = new Line(x, y, x1, y1, color);
+        rpc.addItem(new Line(x, y, x1, y1, color));
     }
 
     protected void startDrawingPoint(int clientX, int clientY) {
