@@ -52,7 +52,7 @@ public class UI extends com.vaadin.ui.UI
         //rectangle.addClickListener(clickEvent -> Notification.show ("Norm"));
         final Button line = new Button("Linear", new ThemeResource("icons/1.png"));
         line.addStyleName("mystyle");
-        //line.addClickListener(clickEvent -> );
+        line.addClickListener(clickEvent -> {canvas.startDrawLines("", 2);});
         layout1.addComponents(rectangle, line);
         layout1.setSpacing(true);
         layout.addComponents(layout1, canvas);

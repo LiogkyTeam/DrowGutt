@@ -70,11 +70,13 @@ public class CanvasWidget extends VerticalPanel {
     }
 
     public void setCoordinateSpaceHeight(int height){
-        canv.setCoordinateSpaceWidth(height);
+        canv.setCoordinateSpaceHeight(height);
     }
 
     public void setSizes(int width, int height) {
-        canv.setCoordinateSpaceWidth(height);
+        setWidth(width + "px");
+        setHeight(height + "px");
+        canv.setCoordinateSpaceHeight(height);
         canv.setCoordinateSpaceWidth(width);
         canv.setSize(width + "px", height + "px");
     }

@@ -367,7 +367,7 @@ public class CanvasConnector extends AbstractComponentConnector implements
             //TODO: Stepan, fill this method
             @Override
             public void startDrawLines(String color, int thickness){
-                ///getWidget().
+                //getWidget().
             }
             @Override
             public void startDrawCurves(String color, int thickness){
@@ -392,6 +392,16 @@ public class CanvasConnector extends AbstractComponentConnector implements
             @Override
             public void endDraw(){
                 //getWidget().
+            }
+
+            public void setCanvSizes(int width, int height){
+                getWidget().setSizes(width, height);
+            }
+            public void setCanvWidth(int width){
+                getWidget().setCoordinateSpaceWidth(width);
+            }
+            public void setCanvHeight(int height){
+                getWidget().setCoordinateSpaceWidth(height);
             }
         });
     }
@@ -432,6 +442,7 @@ public class CanvasConnector extends AbstractComponentConnector implements
     @Override
     protected Widget createWidget(){
         CanvasWidget widget = new CanvasWidget();
+        widget.setSizes(1000, 570);
         widget.addRpc(rpc);
         return widget;
     }
