@@ -6,6 +6,7 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.*;
 import com.vaadin.*;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.themes.ValoTheme;
 import org.test.Canvas;
 
@@ -16,6 +17,8 @@ import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+
+import java.awt.*;
 
 @Theme("demo")
 @SuppressWarnings("serial")
@@ -44,20 +47,17 @@ public class UI extends com.vaadin.ui.UI
 
         final VerticalLayout layout = new VerticalLayout();
         final HorizontalLayout layout1 = new HorizontalLayout();
-        final MenuBar menu = new MenuBar();
-        final MenuBar.MenuItem pencil = menu.addItem("Pencil", new ThemeResource( "icons/png/pencil.png") , null);
-        final MenuBar.MenuItem size = pencil.addItem("Size",null,null);
-        size.addItem("1px",new ThemeResource("icons/1.png"),null);
-        size.addItem("2px",new ThemeResource("icons/2.png"),null);
-        size.addItem("3px",new ThemeResource("icons/3.png"),null);
-        size.addItem("4px",new ThemeResource("icons/4.png"),null);
-        layout.addComponents(menu);
-        layout1.addComponents(layout, canvas);
-        setContent(layout1);
-        // Draw a 20x20 filled rectangle with the upper left corner
-        // in coordinate 10,10. It will be filled with the default
-        // color which is black.
-        //canvas.fillRect(10, 10, 20, 20);
+        final Button rectangle = new Button("Rectangle", new ThemeResource("icons/png/thin-square.png"));
+        rectangle.addStyleName("mystyle");
+        //rectangle.addClickListener(clickEvent -> Notification.show ("Norm"));
+        final Button line = new Button("Linear", new ThemeResource("icons/1.png"));
+        line.addStyleName("mystyle");
+        //line.addClickListener(clickEvent -> );
+        layout1.addComponents(rectangle, line);
+        layout1.setSpacing(true);
+        layout.addComponents(layout1, canvas);
+        layout.setSpacing(true);
+        setContent(layout);
 
         canvas.addMouseMoveListener((MouseEventDetails mouseDetails) -> {
             System.out.println("Mouse moved at "
