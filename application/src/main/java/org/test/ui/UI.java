@@ -1,6 +1,8 @@
 package org.test.ui;
 
 import com.vaadin.annotations.Push;
+import com.vaadin.navigator.Navigator;
+import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.*;
@@ -25,6 +27,7 @@ import java.awt.*;
 public class UI extends com.vaadin.ui.UI
 {
     private static Rooms rooms = new Rooms();
+    public static Authentication AUTH;
 
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = UI.class)
@@ -32,7 +35,7 @@ public class UI extends com.vaadin.ui.UI
     }
 
     @Override
-    protected void init(VaadinRequest request) {
+    protected void setRooms(VaadinRequest request) {
         Key<String> name = new Key<String>("MyRoom_v0.01");
         Room room;
         try {
@@ -85,9 +88,9 @@ public class UI extends com.vaadin.ui.UI
 	getNavigator().addView(LoginPage.NAME, LoginPage.class);
 	getNavigator().setErrorView(LoginPage.class);
 
-	Page.getCurrent().addUriFragmentChangedListener(new UriFragmentChangedListener() {
+	Page.getCurrent().addUriFragmentChangedListener(new Page.UriFragmentChangedListener() {
 		@Override
-        	public void uriFragmentChanged(UriFragmentChangedEvent event) {
+        	public void uriFragmentChanged(Page.UriFragmentChangedEvent event) {
                  	router(event.getUriFragment());
 	        }
 	});

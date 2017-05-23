@@ -24,9 +24,9 @@ public class LoginPage extends VerticalLayout implements View {
 		
 		// add button for sending credentials
 		Button send = new Button("Enter");
-		send.addClickListener(new ClickListener() {
+		send.addClickListener(new Button.ClickListener() {
 			@Override
-			public void buttonClick(ClickEvent event) {
+			public void buttonClick(Button.ClickEvent event) {
 				if(UI.AUTH.authenticate(username.getValue(), password.getValue())) {
 					VaadinSession.getCurrent().setAttribute("user", username.getValue());
 					getUI().getNavigator().addView(RoomChoosePage.NAME, RoomChoosePage.class);
