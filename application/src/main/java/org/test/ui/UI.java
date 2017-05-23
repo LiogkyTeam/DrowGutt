@@ -35,16 +35,7 @@ public class UI extends com.vaadin.ui.UI
     }
 
     @Override
-    protected void setRooms(VaadinRequest request) {
-        Key<String> name = new Key<String>("MyRoom_v0.01");
-        Room room;
-        try {
-            room = rooms.createRoom(name, 0, getUI());
-        } catch(NonUniqName e) {
-            //some handling
-            return;
-        }
-
+    protected void setRooms(Room room) {
         Canvas canvas = room.getCanvas(this);
 
         final VerticalLayout layout = new VerticalLayout();
@@ -87,7 +78,7 @@ public class UI extends com.vaadin.ui.UI
 	new Navigator(this, this);
 	getNavigator().addView(LoginPage.NAME, LoginPage.class);
 	getNavigator().setErrorView(LoginPage.class);
-
+	/*
 	Page.getCurrent().addUriFragmentChangedListener(new Page.UriFragmentChangedListener() {
 		@Override
         	public void uriFragmentChanged(Page.UriFragmentChangedEvent event) {
@@ -95,6 +86,21 @@ public class UI extends com.vaadin.ui.UI
 	        }
 	});
 
-	router("");
+	router(""); */
     }
+    /*
+    private void router(String route){
+		Notification.show(route);
+		if(getSession().getAttribute("user") != null){
+			getNavigator().addView(SecurePage.NAME, SecurePage.class);
+			getNavigator().addView(OtherSecurePage.NAME, OtherSecurePage.class);
+			if(route.equals("!OtherSecure")){
+				getNavigator().navigateTo(OtherSecurePage.NAME);
+			}else{
+				getNavigator().navigateTo(SecurePage.NAME);
+			}
+		}else{
+			getNavigator().navigateTo(LoginPage.NAME);
+		}
+	} */
 }
