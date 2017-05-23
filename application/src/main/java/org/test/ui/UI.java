@@ -105,6 +105,7 @@ public class UI extends com.vaadin.ui.UI
                 color.setValue(
                         "Color is " + event.getColor().getCSS());
                 info.color = event.getColor().getCSS();
+                info.color = info.color.substring(1);
             }
         });
 
