@@ -45,6 +45,7 @@ public class UI extends com.vaadin.ui.UI
            private String color;
         }
         Canvas canvas = room.getCanvas(this);
+		canvas.setCanvSizes(1000, 570);
         Info1 info = new Info1();
         info.color = "#000000";
         info.thickness1 = 1;
