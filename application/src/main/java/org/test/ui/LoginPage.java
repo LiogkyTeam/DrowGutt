@@ -27,7 +27,7 @@ public class LoginPage extends VerticalLayout implements View {
 		send.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				if(VaadinloginUI.AUTH.authenticate(username.getValue(), password.getValue())) {
+				if(UI.AUTH.authenticate(username.getValue(), password.getValue())) {
 					VaadinSession.getCurrent().setAttribute("user", username.getValue());
 					getUI().getNavigator().addView(RoomChoosePage.NAME, RoomChoosePage.class);
 					Page.getCurrent().setUriFragment("!"+RoomChoosePage.NAME);
