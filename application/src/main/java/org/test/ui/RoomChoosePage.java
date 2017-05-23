@@ -24,7 +24,7 @@ public class RoomChoosePage extends VerticalLayout implements View {
 		
 		// add button for sending credentials
 		Button send = new Button("Enter the Room");
-		
+		/*
 		send.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(Button.ClickEvent event) {
@@ -33,7 +33,8 @@ public class RoomChoosePage extends VerticalLayout implements View {
 				try {
 					room = UI.rooms.enterTheRoom(new Key(roomName.getValue()),
 							Long.parseLong(password.getValue()), getUI());
-					UI.setRoom(room, getUI());
+					getUI().getNavigator().addView(SingleRoom.NAME, SingleRoom.class);
+					Page.getCurrent().setUriFragment("!"+SingleRoom.NAME);
 				} catch (RoomNotExists rne) {
 					Notification.show("Room with this name doesn't exist", Notification.Type.ERROR_MESSAGE);
 				} catch (WrongPassword wp) {
@@ -41,7 +42,7 @@ public class RoomChoosePage extends VerticalLayout implements View {
 				}
 			}
 		});
-		
+		*/
 		content.addComponent(send);
 		content.setSizeUndefined();
 		content.setMargin(true);
@@ -64,7 +65,7 @@ public class RoomChoosePage extends VerticalLayout implements View {
 		
 		// add button for sending credentials
 		Button send2 = new Button("Create a Room");
-		
+		/*
 		send2.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(Button.ClickEvent event) {
@@ -79,7 +80,7 @@ public class RoomChoosePage extends VerticalLayout implements View {
 				}
 			}
 		});
-		
+		*/
 		content2.addComponent(send2);
 		content2.setSizeUndefined();
 		content2.setMargin(true);
