@@ -45,6 +45,8 @@ public class UI extends com.vaadin.ui.UI
 
         Canvas canvas = room.getCanvas(this);
 
+        canvas.setCanvSizes(1000, 570);
+
         final VerticalLayout layout = new VerticalLayout();
         final HorizontalLayout layout1 = new HorizontalLayout();
         final Button rectangle = new Button("Rectangle", new ThemeResource("icons/png/thin-square.png"));
@@ -59,7 +61,7 @@ public class UI extends com.vaadin.ui.UI
         layout.setSpacing(true);
         setContent(layout);
 
-        canvas.addMouseMoveListener((MouseEventDetails mouseDetails) -> {
+        /*canvas.addMouseMoveListener((MouseEventDetails mouseDetails) -> {
             System.out.println("Mouse moved at "
                     + mouseDetails.getClientX() + ","
                     + mouseDetails.getClientY());
@@ -75,6 +77,6 @@ public class UI extends com.vaadin.ui.UI
             System.out.println("Mouse up at "
                     + mouseDetails.getClientX() + ","
                     + mouseDetails.getClientY());
-        });
+        });*/
     }
 }

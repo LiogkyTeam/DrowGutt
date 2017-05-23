@@ -10,7 +10,6 @@ import java.io.Serializable;
 public class Point extends Item implements Serializable {
     private int x;
     private int y;
-    private String color;
 
     public Point ()
     {
@@ -29,10 +28,6 @@ public class Point extends Item implements Serializable {
 
     public int getY() {
         return y;
-    }
-
-    public String getColor() {
-        return color;
     }
 
     public void draw(CanvasWidget canvas)

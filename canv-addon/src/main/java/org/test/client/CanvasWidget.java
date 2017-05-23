@@ -14,8 +14,14 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.user.client.Window;
+import org.test.client.item.objects.Curve;
 import org.test.client.item.objects.Line;
 import org.test.client.item.objects.Point;
+import org.test.client.item.objects.Rectangle;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 // Extend any GWT Widget
 public class CanvasWidget extends VerticalPanel {
@@ -35,14 +41,45 @@ public class CanvasWidget extends VerticalPanel {
         ctx = canv.getContext2d();
         color = "ff0000";
 
-        addMouseDownHandler(new MouseDownHandler() {
+        canv.addMouseDownHandler(new MouseDownHandler() {
             @Override
             public void onMouseDown(MouseDownEvent mouseDownEvent) {
-                startDrawingCurve(mouseDownEvent.getClientX(), mouseDownEvent.getClientY());
+                startDrawingRect(mouseDownEvent.getClientX(), mouseDownEvent.getClientY());
+                //setSizes(40, 80);
             }
         });
 
+        /*canv.addMouseMoveHandler(new MouseMoveHandler() {
+            @Override
+            public void onMouseMove(MouseMoveEvent event) {
+                continueDrawingCurve(event.getClientX(), event.getClientY());
+            }
+        });*/
+
+        canv.addMouseUpHandler(new MouseUpHandler() {
+
+            @Override
+            public void onMouseUp(MouseUpEvent event) {
+                endDrawingRect(event.getClientX(), event.getClientY());
+                //setSizes(200, 200);
+            }
+        });
+
+        drawSomething(20);
+        drawSomething(30);
+        drawSomething(40);
+
         setStyleName("widget");
+    }
+
+    private void drawSomething(double x){
+        beginPath();
+        setLineWidth((double)5);
+        setStrokeStyle("000000");
+        moveTo((double)x, (double)20);
+        lineTo((double) 20, (double) 100);
+        closePath();
+        stroke();
     }
 
     public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler){
@@ -93,14 +130,14 @@ public class CanvasWidget extends VerticalPanel {
     public void drawImage1(final String url, final Double offsetX,
                            final Double offsetY) {
         ctx.drawImage(ImageElement.as(new Image(url).getElement()),
-                        offsetX, offsetY);
+                offsetX, offsetY);
     }
 
     public void drawImage2(final String url, final Double offsetX,
                            final Double offsetY, final Double imageWidth,
                            final Double imageHeight) {
         ctx.drawImage(ImageElement.as(new Image(url).getElement()),
-                        offsetX, offsetY, imageWidth, imageHeight);
+                offsetX, offsetY, imageWidth, imageHeight);
 
     }
 
@@ -110,8 +147,8 @@ public class CanvasWidget extends VerticalPanel {
                            final Double destY, final Double destWidth,
                            final Double destHeight) {
         ctx.drawImage(ImageElement.as(new Image(url).getElement()),
-                        sourceX, sourceY, sourceWidth, sourceHeight,
-                        destX, destY, destWidth, destHeight);
+                sourceX, sourceY, sourceWidth, sourceHeight,
+                destX, destY, destWidth, destHeight);
     }
 
     public void fill() {
@@ -182,7 +219,7 @@ public class CanvasWidget extends VerticalPanel {
     public void strokeRect(final Double startX, final Double startY,
                            final Double strokeWidth, final Double strokeHeight) {
         ctx.strokeRect(startX, startY, strokeWidth,
-                        strokeHeight);
+                strokeHeight);
     }
 
     public void transform(final Double m11, final Double m12,
@@ -249,12 +286,12 @@ public class CanvasWidget extends VerticalPanel {
     }
 
     public CanvasGradient createLinearGradient(final Double x0, final Double y0, final Double x1,
-                                     final Double y1) {
+                                               final Double y1) {
         return ctx.createLinearGradient(x0, y0, x1, y1);
     }
 
     public CanvasGradient createRadialGradient(final Double x0, final Double y0, final Double r0,
-                                     final Double x1, final Double y1, final Double r1) {
+                                               final Double x1, final Double y1, final Double r1) {
         return ctx.createRadialGradient(x0, y0, r0, x1, y1, r1);
     }
 
@@ -276,8 +313,26 @@ public class CanvasWidget extends VerticalPanel {
     }
 
     protected void endDrawingLine(int clientX, int clientY){
-        Line line = new Line(x, y, clientX, clientY, color);
-        rpc.addItem(line);
+        int x1 = clientX - canv.getAbsoluteLeft() + Window.getScrollLeft();
+        int y1 = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
+        //if (x1 < 0 || y1 < 0 || x < 0 || y < 0 || x1 > 570 || x > 570 || y1 > 570 || y > 570)
+        //setSizes(200, 200);
+        Context2d ctx = canv.getContext2d();
+        ctx.beginPath();
+        ctx.setLineWidth(5);
+        ctx.setStrokeStyle("000000");
+        ctx.moveTo(x, y);
+        ctx.lineTo(x1, y1);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.setLineWidth(5);
+        ctx.setStrokeStyle("ff0000");
+        ctx.moveTo(0, 20);
+        ctx.lineTo(100, 100);
+        ctx.closePath();
+        ctx.stroke();
+        Line line = new Line(x, y, x1, y1, color);
     }
 
     protected void startDrawingPoint(int clientX, int clientY) {
@@ -314,6 +369,29 @@ public class CanvasWidget extends VerticalPanel {
     }
 
     protected void endDrawingCurve(int clientX, int clientY) {
+        points.clear();
+        x = 0;
+        y = 0;
+        lastUpdateTime = new Date().getTime();
+        Curve curve = new Curve(points);
+    }
 
+    protected void startDrawingRect(int clientX, int clientY) {
+        x = clientX - canv.getAbsoluteLeft() + Window.getScrollLeft();
+        y = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
+    }
+
+    protected void endDrawingRect(int clientX, int clientY){
+        int x1 = clientX - canv.getAbsoluteLeft() + Window.getScrollLeft();
+        int y1 = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
+        Context2d ctx = canv.getContext2d();
+        ctx.beginPath();
+        ctx.setLineWidth(5);
+        ctx.setStrokeStyle("000000");
+        ctx.strokeRect(min(x, x1), min(y, y1), abs(x - x1), abs(y - y1));
+        ctx.closePath();
+        Rectangle Rect = new Rectangle(min(x, x1), min(y, y1), max(x, x1), max(y, y1));
+        x = 0;
+        y = 0;
     }
 }
