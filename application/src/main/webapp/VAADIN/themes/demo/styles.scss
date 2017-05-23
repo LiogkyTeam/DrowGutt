@@ -16,6 +16,7 @@ canvas {
 	border: 1px solid powderblue;
 	border-radius: 10px;
 	margin-left: 15px;
+	//background-image: url(images/1.jpg);
 }
 .v-button-caption {
 	color: black;
@@ -98,8 +99,16 @@ canvas {
 }
 
 .v-app {
-	background-image: url(images/1.png);
+	background-image: url(images/4.png);
 	background-size: 100%;
 	background-position: center, center;
 	background-repeat: no-repeat; }
 
+.popupContent {
+	background-color: navajowhite;
+	//background: center;
+	font-weight: bold;
+	color: black;
+	margin: 15px;
+	border: none;
+}
