@@ -7,6 +7,7 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 
 public class LoginPage extends VerticalLayout implements View {
+	private static final long serialVersionUID = 1L;
 	public static final String NAME = "";
 
 	public LoginPage(){
