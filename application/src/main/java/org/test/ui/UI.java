@@ -9,6 +9,7 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.MouseEventDetails;
+import com.vaadin.shared.ui.colorpicker.Color;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.colorpicker.ColorChangeEvent;
 import com.vaadin.ui.components.colorpicker.ColorChangeListener;
@@ -44,9 +45,6 @@ public class UI extends com.vaadin.ui.UI
            private String color;
         }
         Canvas canvas = room.getCanvas(this);
-
-        canvas.setCanvSizes(1000, 570);
-
         Info1 info = new Info1();
         info.color = "#000000";
         info.thickness1 = 1;
@@ -65,6 +63,12 @@ public class UI extends com.vaadin.ui.UI
         line.addClickListener(clickEvent -> {
             canvas.endDraw();
             canvas.startDrawLines(info.color,info.thickness1);
+        });
+        final Button point = new Button("Point", new ThemeResource("icons/png/circle.png"));
+        point.addStyleName("mystyle");
+        point.addClickListener(clickEvent -> {
+            canvas.endDraw();
+            canvas.startDrawPoints(info.color,info.thickness1);
         });
         final MenuBar menu = new MenuBar();
         final Label selection = new Label("The thickness is 1 px");
@@ -100,7 +104,8 @@ public class UI extends com.vaadin.ui.UI
         size.addItem("3px",new ThemeResource("icons/3.png"), chooseThickness);
         size.addItem("4px",new ThemeResource("icons/4.png"), chooseThickness);
         menu.addStyleName("mystyle");
-        ColorPicker picker = new ColorPicker("Pick the color");
+        ColorPicker picker = new ColorPicker();
+        picker.setPopupStyle(AbstractColorPicker.PopupStyle.POPUP_NORMAL);
         picker.addColorChangeListener(new ColorChangeListener() {
             @Override
             public void colorChanged(ColorChangeEvent event) {
@@ -108,7 +113,6 @@ public class UI extends com.vaadin.ui.UI
                 color.setValue(
                         "Color is " + event.getColor().getCSS());
                 info.color = event.getColor().getCSS();
-                info.color = info.color.substring(1);
             }
         });
 
@@ -119,29 +123,11 @@ public class UI extends com.vaadin.ui.UI
 
         picker.addStyleName("mystyle");
         layout3.addComponents(selection, color);
-        layout1.addComponents(rectangle, line, menu, picker);
+        layout1.addComponents(rectangle, line, point, menu, picker);
         layout1.setSpacing(true);
         layout2.addComponents(canvas, layout3);
         layout.addComponents(layout1, layout2);
         layout.setSpacing(true);
         setContent(layout);
-
-        /*canvas.addMouseMoveListener((MouseEventDetails mouseDetails) -> {
-            System.out.println("Mouse moved at "
-                    + mouseDetails.getClientX() + ","
-                    + mouseDetails.getClientY());
-        });
-
-        canvas.addMouseDownListener((MouseEventDetails mouseDetails) -> {
-            System.out.println("Mouse down at "
-                    + mouseDetails.getClientX() + ","
-                    + mouseDetails.getClientY());
-        });
-
-        canvas.addMouseUpListener((MouseEventDetails mouseDetails) -> {
-            System.out.println("Mouse up at "
-                    + mouseDetails.getClientX() + ","
-                    + mouseDetails.getClientY());
-        });*/
     }
 }
