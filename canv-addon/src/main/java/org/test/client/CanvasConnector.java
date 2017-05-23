@@ -336,7 +336,7 @@ public class CanvasConnector extends AbstractComponentConnector{
             }
             @Override
             public void startDrawRectangles(String color, int thickness){
-                ///getWidget().
+                getWidget().drawRects(color, thickness);
             }
             @Override
             public void startDrawCubicBezier(String color, int thickness){
@@ -348,7 +348,7 @@ public class CanvasConnector extends AbstractComponentConnector{
             }
             @Override
             public void endDraw(){
-                //getWidget().
+                getWidget().end();
             }
 
             public void setCanvSizes(int width, int height){

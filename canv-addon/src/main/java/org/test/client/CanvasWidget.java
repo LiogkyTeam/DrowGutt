@@ -35,41 +35,13 @@ public class CanvasWidget extends VerticalPanel {
     int x, y;
     public String color;
     ArrayList<Point> points = new ArrayList<Point>();
+    ArrayList<HandlerRegistration> hand = new ArrayList<HandlerRegistration>();
 
     public CanvasWidget(){
         canv = com.google.gwt.canvas.client.Canvas.createIfSupported();
         add(canv);
         ctx = canv.getContext2d();
         color = "ff0000";
-
-        canv.addMouseDownHandler(new MouseDownHandler() {
-            @Override
-            public void onMouseDown(MouseDownEvent mouseDownEvent) {
-                startDrawingRect(mouseDownEvent.getClientX(), mouseDownEvent.getClientY());
-                //setSizes(40, 80);
-            }
-        });
-
-        /*canv.addMouseMoveHandler(new MouseMoveHandler() {
-            @Override
-            public void onMouseMove(MouseMoveEvent event) {
-                continueDrawingCurve(event.getClientX(), event.getClientY());
-            }
-        });*/
-
-        canv.addMouseUpHandler(new MouseUpHandler() {
-
-            @Override
-            public void onMouseUp(MouseUpEvent event) {
-                endDrawingRect(event.getClientX(), event.getClientY());
-                //setSizes(200, 200);
-            }
-        });
-
-        drawSomething(20);
-        drawSomething(30);
-        drawSomething(40);
-
         setStyleName("widget");
     }
 
@@ -308,6 +280,43 @@ public class CanvasWidget extends VerticalPanel {
         return (float) Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
     }
 
+    public void drawLines(String color, int thickness){
+        hand.add(canv.addMouseDownHandler(new MouseDownHandler() {
+        @Override
+        public void onMouseDown(MouseDownEvent mouseDownEvent) {
+            startDrawingLine(mouseDownEvent.getClientX(), mouseDownEvent.getClientY());
+        }}));
+
+        hand.add(canv.addMouseUpHandler(new MouseUpHandler() {
+            @Override
+            public void onMouseUp(MouseUpEvent event) {
+                endDrawingLine(color, thickness, event.getClientX(), event.getClientY());
+            }
+        }));
+    }
+
+    public void drawRects(String color, int thickness) {
+        hand.add(canv.addMouseDownHandler(new MouseDownHandler() {
+            @Override
+            public void onMouseDown(MouseDownEvent event) {
+                startDrawingRect(event.getClientX(), event.getClientY());
+            }
+        }));
+
+        hand.add(canv.addMouseUpHandler(new MouseUpHandler() {
+            @Override
+            public void onMouseUp(MouseUpEvent event) {
+                endDrawingRect(event.getClientX(), event.getClientY(), thickness);
+            }
+        }));
+    }
+
+    public void end() {
+        for (int i = 1; i < hand.size(); i++) {
+            hand.get(i).removeHandler();
+        }
+    }
+
     protected void startDrawingLine(int clientX, int clientY) {
         x = clientX - canv.getAbsoluteLeft() + Window.getScrollLeft();
         y = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
@@ -373,12 +382,12 @@ public class CanvasWidget extends VerticalPanel {
         y = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
     }
 
-    protected void endDrawingRect(int clientX, int clientY){
+    protected void endDrawingRect(int clientX, int clientY, int thickness){
         int x1 = clientX - canv.getAbsoluteLeft() + Window.getScrollLeft();
         int y1 = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
         Context2d ctx = canv.getContext2d();
         ctx.beginPath();
-        ctx.setLineWidth(5);
+        ctx.setLineWidth(thickness);
         ctx.setStrokeStyle("000000");
         ctx.strokeRect(min(x, x1), min(y, y1), abs(x - x1), abs(y - y1));
         ctx.closePath();
