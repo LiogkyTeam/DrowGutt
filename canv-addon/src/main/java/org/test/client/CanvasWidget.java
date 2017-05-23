@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.user.client.Window;
+import org.test.client.item.Item;
 import org.test.client.item.objects.Line;
 import org.test.client.item.objects.Point;
 
@@ -35,14 +36,17 @@ public class CanvasWidget extends VerticalPanel {
         ctx = canv.getContext2d();
         color = "ff0000";
 
-        addMouseDownHandler(new MouseDownHandler() {
-            @Override
-            public void onMouseDown(MouseDownEvent mouseDownEvent) {
-                startDrawingCurve(mouseDownEvent.getClientX(), mouseDownEvent.getClientY());
-            }
-        });
-
         setStyleName("widget");
+    }
+
+    private void drawSomething(double x){
+        beginPath();
+        setLineWidth((double)5);
+        setStrokeStyle("000000");
+        moveTo((double)x, (double)20);
+        lineTo((double) 20, (double) 100);
+        closePath();
+        stroke();
     }
 
     public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler){
@@ -270,14 +274,40 @@ public class CanvasWidget extends VerticalPanel {
         return (float) Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
     }
 
+    public void drawLines(String color, int thickness){
+        canv.addMouseDownHandler(new MouseDownHandler() {
+            @Override
+            public void onMouseDown(MouseDownEvent mouseDownEvent) {
+                startDrawingLine(mouseDownEvent.getClientX(), mouseDownEvent.getClientY());
+            }
+        });
+
+        canv.addMouseUpHandler(new MouseUpHandler() {
+
+            @Override
+            public void onMouseUp(MouseUpEvent event) {
+                endDrawingLine(color, thickness, event.getClientX(), event.getClientY());
+            }
+        });
+    }
+
     protected void startDrawingLine(int clientX, int clientY) {
         x = clientX - canv.getAbsoluteLeft() + Window.getScrollLeft();
         y = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
     }
 
-    protected void endDrawingLine(int clientX, int clientY){
-        Line line = new Line(x, y, clientX, clientY, color);
-        rpc.addItem(line);
+    protected void endDrawingLine(String color, int thickness, int clientX, int clientY){
+        int x1 = clientX - canv.getAbsoluteLeft() + Window.getScrollLeft();
+        int y1 = clientY - canv.getAbsoluteTop() + Window.getScrollTop();
+        Context2d ctx = canv.getContext2d();
+        ctx.beginPath();
+        ctx.setLineWidth(thickness);
+        ctx.setStrokeStyle(color);
+        ctx.moveTo(x, y);
+        ctx.lineTo(x1, y1);
+        ctx.closePath();
+        ctx.stroke();
+        rpc.addItem(new Line(x, y, x1, y1, color));
     }
 
     protected void startDrawingPoint(int clientX, int clientY) {

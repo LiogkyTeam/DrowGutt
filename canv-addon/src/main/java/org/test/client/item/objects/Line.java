@@ -39,7 +39,12 @@ public class Line extends Item{
 
     public void draw(CanvasWidget canvas)
     {
+        canvas.beginPath();
+        canvas.setLineWidth((double)5);
+        canvas.setStrokeStyle(color);
         canvas.moveTo((double) start_x, (double) start_y);
         canvas.lineTo((double) end_x, (double) end_y);
+        canvas.closePath();
+        canvas.stroke();
     }
 }
