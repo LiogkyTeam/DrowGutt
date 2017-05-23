@@ -7,7 +7,7 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 
 public class LoginPage extends VerticalLayout implements View {
-	public static final String NAME = "LoginPage";
+	public static final String NAME = "";
 
 	public LoginPage(){
 		// add login panel to the layout
