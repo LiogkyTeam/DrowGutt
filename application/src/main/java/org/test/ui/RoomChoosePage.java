@@ -28,15 +28,16 @@ public class RoomChoosePage extends VerticalLayout implements View {
 		send.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				
+				Room room;
+					
 				try {
-					Rooms.enterTheRoom(roomName.getValue(), password.getValue(), getUI())
+					room = Rooms.enterTheRoom(roomName.getValue(), password.getValue(), getUI())
 				} catch (RoomNotExists rne) {
 					Notification.show("Room with this name doesn't exist", Notification.Type.ERROR_MESSAGE);
 				} catch (WrongPassword wp) {
 					Notification.show("Wrong password", Notification.Type.ERROR_MESSAGE);
 				}
-				
+				getUI().setRoom(room);
 			}
 		});
 		
@@ -66,13 +67,14 @@ public class RoomChoosePage extends VerticalLayout implements View {
 		send2.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
+				Room room;
 				
 				try {
-					Rooms.createRoom(roomName2.getValue(), password2.getValue(), getUI())
+					room = Rooms.createRoom(roomName2.getValue(), password2.getValue(), getUI())
 				} catch (NonUniqName nun) {
 					Notification.show("Room with this name already exists", Notification.Type.ERROR_MESSAGE);
 				}
-				
+				getUI().setRoom(room);
 			}
 		});
 		
