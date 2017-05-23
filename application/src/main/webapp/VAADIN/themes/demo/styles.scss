@@ -1,44 +1,46 @@
-$v-background-color: #ffffff;
+//$v-background-color: #ffffff;
 //$v-border: #111;
 @import "../valo/valo";
 //@import "styles.css";
 
 
 
-$white: #ffffff;
-$gray: #d1d1cf;
-$green: #40b527;
-$darkgreen: darken($green, 30%);
+
+
+@include valo;
 
 // Prefix all selectors in your theme with .ui
-.demo {
 
-	// Include valo theme styles in your theme
-	@include valo;
+canvas {
+	background-color: white;
+	border: 1px solid powderblue;
+	border-radius: 10px;
 
-
-	// You can style your ui app right here
-	.demo{
-		background-color: $white;
-		background-image: url(images/radial-gradient.png);
-		background-size: 90%;
-		background-position: center center;
-		background-repeat: no-repeat;
-	}
-	
-	// You can also customize your component for the ui
-	// app, but remember that these styles are not part of
-	// the component. To include built-in CSS for your component,
-	// edit client/styles.css under java sources
-	div.widget {
-		color: $green;
-		font-size: 50pt;
-		font-weight: bold;
-		text-shadow: 0px 3px 0px $darkgreen,
-             0px 14px 10px rgba(0,0,0,0.15),
-             0px 24px 2px rgba(0,0,0,0.1),
-             0px 34px 30px rgba(0,0,0,0.1);
-        text-align: center;
-		border-color: #333333;
-	}
 }
+.v-button-caption {
+	color: black;
+}
+.v-button-mystyle {
+	background-color: navajowhite;
+	background-image: url(images/3.jpg);
+	font-size: 12pt;
+	font-weight: bold;
+	color: red;
+	border-color:  deepskyblue;
+	border-radius: 75px;
+	border-width: 2px;
+}
+.v-pressed.v-button-mystyle {
+	background-color: brown;
+	color: lime;
+}
+.v-vertical > .v-spacing {
+	height: 40px;
+}
+
+.v-app {
+	background-image: url(images/1.png);
+	background-size: 100%;
+	background-position: top;
+	background-repeat: no-repeat; }
+
