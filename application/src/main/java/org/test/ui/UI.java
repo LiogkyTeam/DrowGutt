@@ -20,15 +20,17 @@ import com.vaadin.server.VaadinServlet;
 @SuppressWarnings("serial")
 public class UI extends com.vaadin.ui.UI
 {
-        private Canvas canvas;
-
+    private Canvas canvas;
+    public static Authentication AUTH;    
+        
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = UI.class)
     public static class Servlet extends VaadinServlet {
     }
+    
+    public void setRoom(Room room) {
+        Canvas canvas = room.getCanvas(this);
 
-    @Override
-    protected void init(VaadinRequest request) {
         final VerticalLayout layout = new VerticalLayout();
         final HorizontalLayout layout1 = new HorizontalLayout();
         final MenuBar menu = new MenuBar();
@@ -38,10 +40,8 @@ public class UI extends com.vaadin.ui.UI
         size.addItem("2px",new ThemeResource("icons/2.png"),null);
         size.addItem("3px",new ThemeResource("icons/3.png"),null);
         size.addItem("4px",new ThemeResource("icons/4.png"),null);
-        // Instantiate the component and add it to your ui
-        //layout1.addComponents(canvas = new Canvas());
         layout.addComponents(menu);
-        layout1.addComponents(layout, canvas = new Canvas());
+        layout1.addComponents(layout, canvas);
         setContent(layout1);
         // Draw a 20x20 filled rectangle with the upper left corner
         // in coordinate 10,10. It will be filled with the default
@@ -65,5 +65,23 @@ public class UI extends com.vaadin.ui.UI
                     + mouseDetails.getClientX() + ","
                     + mouseDetails.getClientY());
         });
+    }
+
+    @Override
+    protected void init(VaadinRequest request) {
+        AUTH = new Authentication();
+        
+	new Navigator(this, this);
+	getNavigator().addView(LoginPage.NAME, LoginPage.class);
+	getNavigator().setErrorView(LoginPage.class);
+	
+	Page.getCurrent().addUriFragmentChangedListener(new UriFragmentChangedListener() {
+		@Override
+        	public void uriFragmentChanged(UriFragmentChangedEvent event) {
+                 	router(event.getUriFragment());
+	        }
+	});
+	
+	router("");
     }
 }
