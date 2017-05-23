@@ -8,7 +8,7 @@ public class Rooms {
     public static Rooms getInstance() {
         return ourInstance;
     }
-    private Rooms(){
+    public Rooms(){
 
     }
 

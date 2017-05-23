@@ -25,19 +25,20 @@ public class RoomChoosePage extends VerticalLayout implements View {
 		// add button for sending credentials
 		Button send = new Button("Enter the Room");
 		
-		send.addClickListener(new ClickListener() {
+		send.addClickListener(new Button.ClickListener() {
 			@Override
-			public void buttonClick(ClickEvent event) {
+			public void buttonClick(Button.ClickEvent event) {
 				Room room;
 					
 				try {
-					room = Rooms.enterTheRoom(roomName.getValue(), password.getValue(), getUI())
+					room = UI.rooms.enterTheRoom(new Key(roomName.getValue()),
+							Long.parseLong(password.getValue()), getUI());
+					UI.setRoom(room, getUI());
 				} catch (RoomNotExists rne) {
 					Notification.show("Room with this name doesn't exist", Notification.Type.ERROR_MESSAGE);
 				} catch (WrongPassword wp) {
 					Notification.show("Wrong password", Notification.Type.ERROR_MESSAGE);
 				}
-				getUI().setRoom(room);
 			}
 		});
 		
@@ -64,17 +65,18 @@ public class RoomChoosePage extends VerticalLayout implements View {
 		// add button for sending credentials
 		Button send2 = new Button("Create a Room");
 		
-		send2.addClickListener(new ClickListener() {
+		send2.addClickListener(new Button.ClickListener() {
 			@Override
-			public void buttonClick(ClickEvent event) {
+			public void buttonClick(Button.ClickEvent event) {
 				Room room;
 				
 				try {
-					room = Rooms.createRoom(roomName2.getValue(), password2.getValue(), getUI())
+					room = UI.rooms.createRoom(new Key(roomName2.getValue()),
+							Long.parseLong(password2.getValue()), getUI());
+					UI.setRoom(room, getUI());
 				} catch (NonUniqName nun) {
 					Notification.show("Room with this name already exists", Notification.Type.ERROR_MESSAGE);
 				}
-				getUI().setRoom(room);
 			}
 		});
 		

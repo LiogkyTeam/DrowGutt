@@ -2,8 +2,7 @@ package org.test.ui;
 
 import com.vaadin.annotations.Push;
 import com.vaadin.navigator.Navigator;
-import com.vaadin.server.Page;
-import com.vaadin.server.ThemeResource;
+import com.vaadin.server.*;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.*;
 import com.vaadin.*;
@@ -16,8 +15,6 @@ import javax.servlet.annotation.WebServlet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
 
 import java.awt.*;
 
@@ -26,7 +23,7 @@ import java.awt.*;
 @Push
 public class UI extends com.vaadin.ui.UI
 {
-    private static Rooms rooms = new Rooms();
+    public static Rooms rooms = new Rooms();
     public static Authentication AUTH;
 
     @WebServlet(value = "/*", asyncSupported = true)
@@ -34,50 +31,14 @@ public class UI extends com.vaadin.ui.UI
     public static class Servlet extends VaadinServlet {
     }
 
-    @Override
-    protected void setRooms(Room room) {
-        Canvas canvas = room.getCanvas(this);
-
-        final VerticalLayout layout = new VerticalLayout();
-        final HorizontalLayout layout1 = new HorizontalLayout();
-        final Button rectangle = new Button("Rectangle", new ThemeResource("icons/png/thin-square.png"));
-        rectangle.addStyleName("mystyle");
-        //rectangle.addClickListener(clickEvent -> Notification.show ("Norm"));
-        final Button line = new Button("Linear", new ThemeResource("icons/1.png"));
-        line.addStyleName("mystyle");
-        line.addClickListener(clickEvent -> {canvas.startDrawLines("", 2);});
-        layout1.addComponents(rectangle, line);
-        layout1.setSpacing(true);
-        layout.addComponents(layout1, canvas);
-        layout.setSpacing(true);
-        setContent(layout);
-
-        canvas.addMouseMoveListener((MouseEventDetails mouseDetails) -> {
-            System.out.println("Mouse moved at "
-                    + mouseDetails.getClientX() + ","
-                    + mouseDetails.getClientY());
-        });
-
-        canvas.addMouseDownListener((MouseEventDetails mouseDetails) -> {
-            System.out.println("Mouse down at "
-                    + mouseDetails.getClientX() + ","
-                    + mouseDetails.getClientY());
-        });
-
-        canvas.addMouseUpListener((MouseEventDetails mouseDetails) -> {
-            System.out.println("Mouse up at "
-                    + mouseDetails.getClientX() + ","
-                    + mouseDetails.getClientY());
-        });
-    }
 
     @Override
     protected void init(VaadinRequest request) {
         AUTH = new Authentication();
 
-	new Navigator(this, this);
-	getNavigator().addView(LoginPage.NAME, LoginPage.class);
-	getNavigator().setErrorView(LoginPage.class);
+	    new Navigator(this, this);
+	    getNavigator().addView(LoginPage.NAME, LoginPage.class);
+	    getNavigator().setErrorView(LoginPage.class);
 	/*
 	Page.getCurrent().addUriFragmentChangedListener(new Page.UriFragmentChangedListener() {
 		@Override
