@@ -39,7 +39,7 @@ public class UI extends com.vaadin.ui.UI
 	    new Navigator(this, this);
 	    getNavigator().addView(LoginPage.NAME, LoginPage.class);
 	    getNavigator().setErrorView(LoginPage.class);
-	/*
+	
 	Page.getCurrent().addUriFragmentChangedListener(new Page.UriFragmentChangedListener() {
 		@Override
         	public void uriFragmentChanged(Page.UriFragmentChangedEvent event) {
@@ -47,21 +47,20 @@ public class UI extends com.vaadin.ui.UI
 	        }
 	});
 
-	router(""); */
+	router("");
     }
-    /*
+    
     private void router(String route){
 		Notification.show(route);
 		if(getSession().getAttribute("user") != null){
-			getNavigator().addView(SecurePage.NAME, SecurePage.class);
-			getNavigator().addView(OtherSecurePage.NAME, OtherSecurePage.class);
-			if(route.equals("!OtherSecure")){
+			getNavigator().addView(RoomChoosePage.NAME, RoomChoosePage.class);
+			/*if(route.equals("!RoomChoose")){
 				getNavigator().navigateTo(OtherSecurePage.NAME);
 			}else{
 				getNavigator().navigateTo(SecurePage.NAME);
-			}
+			}*/
 		}else{
 			getNavigator().navigateTo(LoginPage.NAME);
 		}
-	} */
+	}
 }
